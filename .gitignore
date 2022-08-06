@@ -28,3 +28,4 @@
 
 # original
 .DS_Store
+.irb_history
