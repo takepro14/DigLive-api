@@ -1,6 +1,7 @@
 require "validator/email_validator"
 
 class User < ApplicationRecord
+  has_many :posts, dependent: :destroy
   # validates: xxが呼ばれる前に実行される
   before_validation :downcase_email
 
