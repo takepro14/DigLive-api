@@ -1,7 +1,7 @@
 class Api::V1::PostsController < ApplicationController
   def index
     @posts = Post.all
-    render json: @posts.as_json(only: [:id, :user_id, :content, :created_at])
+    render json: @posts.as_json(include: :user)
   end
 
   def create
