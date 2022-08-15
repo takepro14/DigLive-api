@@ -51,6 +51,11 @@ class User < ApplicationRecord
     update!(refresh_jti: nil)
   end
 
+  # ユーザオブジェクトの共通のJSONレスポンスを返す(キーの型を統一)
+  def response_json(payload = {})
+    as_json(only: [:id, :name]).merge(payload).with_indifferent_access
+  end
+
   private
 
     def downcase_email
