@@ -42,6 +42,13 @@ module App
     # $LOAD_PATHにautoload pathを追加しない(Zeitwerk有効時false推奨)
     config.add_autoload_paths_to_load_path = false
 
+    # Cookieを処理するmiddleware
+    config.middleware.use ActionDispatch::Cookies
+
+    # Cookiesのsamesite属性を変更する(本番環境: herokuにおける設定)
+    # config.action_dispatch.cookies_same_site_protection =
+    # ENV["COOKIES_SAME_SITE"].to_sym if Rails.env.production?
+
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
