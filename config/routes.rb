@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'tags/index'
   namespace :api do
     namespace :v1 do
       resources :users, only:[:index]
@@ -7,6 +8,7 @@ Rails.application.routes.draw do
         delete :destroy, on: :collection
       end
       resources :posts
+      resources :tags
     end
   end
 end

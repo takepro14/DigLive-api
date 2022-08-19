@@ -132,3 +132,68 @@ exit
 post_content_params
 post_tag_params
 exit
+Tag.all
+PostTagMap.all
+User.all
+irb
+exit
+PostTagMap.all
+User.all
+Post.all
+Tag.all
+exit
+Tag.all
+exit
+Tag.all
+Post.all
+Tag.all
+Post.all
+exit
+User.all
+exit
+Post.last
+Post.first
+Tag.last
+PostTagMap.last
+post = Post.first
+post
+post.usr
+post.ser
+post.user
+exit
+params
+post_tag_params
+post_content_params
+Tag.all
+exit
+post_content_params
+post_content_params.user_id
+post_content_params[:user_id]
+post_content_params[:tags]
+post_content_params[:tags][]
+post_content_params[:tags][0]
+post = Post.new(post_content_params)
+post = Post.first
+post
+post.save
+post
+Tag.all
+post.tags
+post.tags = Tag.new(tag_name: "困った")
+tag = Tag.new(tag_name: "困った")
+tag.save
+post.tags << tag
+post.save
+post
+post.tags
+post
+PostTagMap.all
+exit
+exi
+exit
+params
+post_tag_params
+post_tag_params[:tags]
+exit
+Post.all.tags
+exit

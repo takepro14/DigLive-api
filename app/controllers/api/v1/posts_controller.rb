@@ -13,6 +13,7 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     @post = Post.new(post_content_params)
+    # binding.pry
     sent_tags = post_tag_params[:tags] === nil ? [] : post_tag_params[:tags]
 
     if @post.save
@@ -33,7 +34,7 @@ class Api::V1::PostsController < ApplicationController
     end
 
     def post_tag_params
-      params.require(:post).permit(:tags)
+      params.require(:post).permit(tags: [])
     end
 
 end
