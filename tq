@@ -1,0 +1,38 @@
+=> [#<Post:0x00007f29a021de20 id: 11, content: "tegad", user_id: 1, created_at: Thu, 18 Aug 2022 18:09:45 JST +09:00, updated_at: Thu, 18 Aug 2022 18:09:45 JST +09:00>,
+ #<Post:0x00007f29a021dd30
+  id: 10,
+  content: "しえんする超音波かんじる。軒出かける戦没。はじめてじぎするさいばん。",
+  user_id: 10,
+  created_at: Thu, 18 Aug 2022 16:52:33 JST +09:00,
+  updated_at: Thu, 18 Aug 2022 16:52:33 JST +09:00>,
+ #<Post:0x00007f29a021dbc8
+  id: 9,
+  content: "母こくみんきょうはんしゃ。ふさい白菊宜しく。汚すぶっきょうむこう。",
+  user_id: 9,
+  created_at: Thu, 18 Aug 2022 16:52:33 JST +09:00,
+  updated_at: Thu, 18 Aug 2022 16:52:33 JST +09:00>,
+ #<Post:0x00007f29a021db00
+  id: 8,
+  content: "かたみち量以下。かぜ大尉下着。しえんするいう浮世絵。",
+  user_id: 8,
+  created_at: Thu, 18 Aug 2022 16:52:33 JST +09:00,
+  updated_at: Thu, 18 Aug 2022 16:52:33 JST +09:00>,
+ #<Post:0x00007f29a021da38
+  id: 7,
+  content: "シアトルしよわよわしいじょうだん。けいむしょ迷路うんがいい。こいぬ投資終点。",
+  user_id: 7,
+  created_at: Thu, 18 Aug 2022 16:52:33 JST +09:00,
+  updated_at: Thu, 18 Aug 2022 16:52:33 JST +09:00>,
+ #<Post:0x00007f29a021d970
+  id: 6,
+  content: "暴力品詞老齢。超音波まもるじょうじゅん。希望する十台じじょでん。",
+  user_id: 6,
+  created_at: Thu, 18 Aug 2022 16:52:33 JST +09:00,
+  updated_at: Thu, 18 Aug 2022 16:52:33 JST +09:00>,
+ #<Post:0x00007f29a021d8a8
+  id: 5,
+  content: "救急車果樹たいさ。賢明号約する。シアトルしかんじるひきざん。",
+  user_id: 5,
+  created_at: Thu, 18 Aug 2022 16:52:33 JST +09:00,
+  updated_at: Thu, 18 Aug 2022 16:52:33 JST +09:00>,
+ #<Post:0x00007f29a021d7e0

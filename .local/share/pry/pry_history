@@ -1,0 +1,134 @@
+post = Post.lat
+post = Post.last
+post
+Hirb.enable
+post
+post.content
+post.user_id
+post.tag_name
+PostTagMap.tags
+PostTagMap.All
+Post.includes(:tags)
+post
+post.includes(:tags).where(tag: { id: 1})
+post.includes(:tags).where(tag: { id: 1 })
+post
+post.user
+post.tags
+post.tags.tag_name
+post.user.name
+post.tags.id
+post.tags.ids
+post.tags.tag_names
+post.tags.tag_name
+post.tags.tags_name
+post.tags.created_at
+post.tags.created
+post.tags.create
+post
+post.tags
+post.post_tag_map
+post.post_tag_maps
+pp post.post_tag_maps
+pp post.post_tag_maps.tags
+pp post.post_tag_maps.tag
+pp post.post_tag_maps.id
+pp post.post_tag_maps.ids
+post.tags
+post.tag_names
+post.methods?
+post.methods
+post.methods.grep /tag/i
+post.methods.grep /name/i
+post.tags
+post.tags.methods.grep /tag/i
+post.tags.methods
+post.tags.methods.grep /name/i
+post.tags.methods.grep /tags/i
+post.tags.methods.grep /tag/i
+post.methods.grep /tags/i
+ptm = PostTagMap.first
+ptm
+ptm.methods.grep /tag/i
+tag = Tag.first
+tag
+tag.method.grep /tag/i
+tag.methods.grep /tag/i
+post
+post.tags
+post.tags.find(1).methods.grep /tag/i
+post = Post.all
+exit
+post = Post.new(content: "test", user_id: "1")
+post
+post.save
+post
+post.tags
+pp post
+post.tags
+exit
+post = Post.last
+post.tags
+tag = Tag.first
+tag.posts
+tag.post
+tag.posts.content
+tag.posts.find(1)
+tag.posts.find(1).content
+tag.posts.content
+tag.posts.each {|p| pp p }
+post
+post = Post.new(user_id: 1, content: "テスト", tags: ["テストタグ"])
+post = Post.new(user_id: 1, content: "テスト", tags: "テストタグ")
+post = Post.new(user_id: 1, content: "テスト", tag: "テストタグ")
+post = Post.new(user_id: 1, content: "テスト", tag_name: ["テストタグ"])
+post = Post.new(user_id: 1, content: "テスト", tag_name: "テストタグ")
+post = Post.new(user_id: 1, content: "テスト")
+post
+post.save
+Post.all
+post
+Post.all
+pp post
+PostTagMap.all
+PostTagMap.new(post_id: 13, tag_id: 1)
+ptm = PostTagMap.all
+ptm.save
+ptm = PostTagMap.new(post_id: 13, tag_id: 1)
+ptm.save
+PostTagMap.all
+tag = Tag.find(1)
+tag
+tag.posts
+pp tag.posts
+tag.posts.content
+tag.posts.each {|p| pp p.content }
+params
+pp params
+params.require(:post)
+params.require(:post).tag_name
+params.require(:user)
+params.require(:users)
+@user
+@post
+post_content_params
+post_tag_params
+@post.tags
+@post.user
+params
+params[:post]
+params.post
+params.require(:post)
+params.require(:post).permit(:tags)
+params
+params.require(:post).permit(:user_id, :content)
+exit
+params
+params.require(:post)
+params.require(:post).permit(:user_id, :content)
+:content
+exit
+@post
+post_content_params
+post_tag_params
+exit
