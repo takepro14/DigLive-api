@@ -26,7 +26,5 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-# original
-.DS_Store
+# 追加
 *history
-.local/share/pry/pry_history
