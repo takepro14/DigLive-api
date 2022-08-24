@@ -4,6 +4,7 @@ class User < ApplicationRecord
   # Token生成モジュール
   include TokenGenerateService
   has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
   # validates: xxが呼ばれる前に実行される
   before_validation :downcase_email
 

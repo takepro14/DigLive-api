@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'comments/create'
+  get 'comments/destroy'
   get 'tags/index'
   namespace :api do
     namespace :v1 do
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
       end
       resources :posts
       resources :tags
+      resources :comments, only: [:create, :destroy]
     end
   end
 end

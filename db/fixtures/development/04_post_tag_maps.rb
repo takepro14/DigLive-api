@@ -1,6 +1,6 @@
-(1..3).each do |id|
+20.times do
   PostTagMap.seed do |s|
-    s.tag_id = id
-    s.post_id = id
+    s.post_id = rand(1..10)
+    s.tag_id = rand(1..30)
   end
 end

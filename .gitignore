@@ -28,4 +28,5 @@
 
 # original
 .DS_Store
-.irb_history
+*history
+.local/share/pry/pry_history

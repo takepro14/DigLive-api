@@ -7,13 +7,13 @@ class Api::V1::PostsController < ApplicationController
     # include xxxはアソシエーションが単数or複数に合わせる
     render json: @posts.as_json(include: [
                                   { user: { only: :name } },
-                                  :tags
+                                  :tags,
+                                  {comments: {include: :user}}
                                 ])
   end
 
   def create
     @post = Post.new(post_content_params)
-    # binding.pry
     sent_tags = post_tag_params[:tags] === nil ? [] : post_tag_params[:tags]
 
     if @post.save
@@ -26,6 +26,23 @@ class Api::V1::PostsController < ApplicationController
       render json: { status: 'ERROR', data: @post.errors }
     end
   end
+
+  def show
+    # binding.pry
+    @post = Post.find(params[:id])
+    render json: @post.as_json(include: [
+                                  {user: {only: :name}},
+                                  :tags,
+                                  {comments: {include: {user: {only: :name}}}}
+                                ])
+  end
+
+  # def search
+  #   @tag_list = Tag.all
+  #   @tag = Tag.find(params[:tag_id])
+  #   @posts = @tag.posts.all
+  #   render json: @posts
+  # end
 
   private
 
