@@ -5,6 +5,7 @@ class User < ApplicationRecord
   include TokenGenerateService
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
   # validates: xxが呼ばれる前に実行される
   before_validation :downcase_email
 
@@ -29,8 +30,8 @@ class User < ApplicationRecord
                 allow_blank: true
               },
               allow_nil: true
+
   class << self
-    # emailからアクティブなユーザーを返す
     def find_by_activated(email)
       find_by(email: email, activated: true)
     end

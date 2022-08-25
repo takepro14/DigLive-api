@@ -1,6 +1,5 @@
 module UserSessionizeService
 
-  # セッションユーザーが居ればtrue、存在しない場合は401を返す
   def sessionize_user
     session_user.present? || unauthorized_user
   end

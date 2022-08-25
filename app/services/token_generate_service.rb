@@ -1,7 +1,8 @@
 module TokenGenerateService
+
   # include時の初期化処理
   def self.included(base)
-    # UserクラスでClassMethods以下のメソッド群を使えるようにしている
+    # UserクラスでClassMethods以下のクラスメソッド群を使えるようにする
     base.extend ClassMethods
   end
 

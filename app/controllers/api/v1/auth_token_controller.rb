@@ -6,29 +6,22 @@ class Api::V1::AuthTokenController < ApplicationController
   # refresh_tokenのInvalidJitErrorが発生した場合はカスタムエラーを返す
   rescue_from JWT::InvalidJtiError, with: :invalid_jti
 
-  # userのログイン情報を確認する
   before_action :authenticate, only: [:create]
-  # 処理前にsessionを削除する
   before_action :delete_session, only: [:create]
-  # session_userを取得、存在しない場合は401を返す
   before_action :sessionize_user, only: [:refresh, :destroy]
 
-  # ログイン
   def create
     @user = login_user
     set_refresh_token_to_cookie
     render json: login_response
   end
 
-  # リフレッシュ
   def refresh
     @user = session_user
-    # refresh tokenの自動更新をする
     set_refresh_token_to_cookie
     render json: login_response
   end
 
-  # ログアウト
   def destroy
     delete_session if session_user.forget
     cookies[session_key].nil? ? head(:ok) : response_500("Could not delete session")
@@ -36,20 +29,17 @@ class Api::V1::AuthTokenController < ApplicationController
 
   private
 
-    # params[:email]からアクティブなユーザーを返す
     def login_user
       @_login_user ||= User.find_by_activated(auth_params[:email])
     end
 
-    # ログインユーザーが居ない、もしくはpasswordが一致しない場合404を返す
     def authenticate
-      unless login_user.present? &&
-              login_user.authenticate(auth_params[:password])
+      # この中で使われているauthenticateはhas_secure_passwordのメソッド
+      if !login_user.present? || !login_user.authenticate(auth_params[:password])
         raise UserAuth.not_found_exception_class
       end
     end
 
-    # refresh_tokenをcookieにセットする
     def set_refresh_token_to_cookie
       cookies[session_key] = {
         value: refresh_token,
