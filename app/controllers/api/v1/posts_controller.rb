@@ -37,6 +37,8 @@ class Api::V1::PostsController < ApplicationController
                                 ])
   end
 
+  def destroy
+  end
   # def search
   #   @tag_list = Tag.all
   #   @tag = Tag.find(params[:tag_id])
