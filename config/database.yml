@@ -26,13 +26,13 @@ default: &default
 
 development:
   <<: *default
-  database: app_development
+  database: mens_up_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database.
-  #username: app
+  #username: mens_up
 
   # The password associated with the postgres role (username).
   #password:
@@ -47,7 +47,7 @@ development:
   #port: 5432
 
   # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
+  #schema_search_path: mymens_up,sharedmens_up,public
 
   # Minimum log levels, in increasing order:
   #   debug5, debug4, debug3, debug2, debug1,
@@ -60,14 +60,14 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: app_test
+  database: mens_up_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
 #
 # Instead, provide the password as a unix environment variable when you boot
-# the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
+# the mens_up. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full rundown on how to provide these environment variables in a
 # production deployment.
 #
@@ -83,6 +83,6 @@ test:
 #
 production:
   <<: *default
-  database: app_production
-  username: app
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
+  database: mens_up_production
+  username: mens_up
+  password: <%= ENV['mens_up_DATABASE_PASSWORD'] %>
