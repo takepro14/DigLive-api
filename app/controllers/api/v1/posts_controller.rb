@@ -40,6 +40,11 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def destroy
+    @post = Post.find(params[:id])
+
+    if @post.destroy
+      render json: @post
+    end
   end
   # def search
   #   @tag_list = Tag.all
