@@ -6,6 +6,11 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :active_relationships, class_name:  "Relationship", foreign_key: "follower_id", dependent:   :destroy
+  has_many :passive_relationships, class_name:  "Relationship", foreign_key: "followed_id", dependent:   :destroy
+  has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
+
   # validates: xxが呼ばれる前に実行される
   before_validation :downcase_email
 
@@ -56,6 +61,18 @@ class User < ApplicationRecord
   # ユーザオブジェクトの共通のJSONレスポンスを返す(キーの型を統一)
   def response_json(payload = {})
     as_json(only: [:id, :name]).merge(payload).with_indifferent_access
+  end
+
+  def follow(other_user)
+    active_relationships.create(followed_id: other_user.id)
+  end
+
+  def unfollow(other_user)
+    active_relationships.find_by(followed_id: other_user.id).destroy
+  end
+
+  def following?(other_user)
+    following.include?(other_user)
   end
 
   private
