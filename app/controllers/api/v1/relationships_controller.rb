@@ -2,14 +2,16 @@ class Api::V1::RelationshipsController < ApplicationController
   before_action :set_user
 
   def create
-    # binding.pry
     current_user.follow(@other_user)
-    render json: @other_user
+    @relationship = Relationship.find_by(followed_id: @other_user.id, follower_id: current_user.id)
+    # binding.pry
+    render json: @relationship
   end
 
   def destroy
     current_user.unfollow(@other_user)
-    render json: @other_user
+    @relationship = Relationship.find_by(followed_id: @other_user.id, follower_id: current_user.id)
+    render json: @relationship
   end
 
   private
@@ -17,4 +19,5 @@ class Api::V1::RelationshipsController < ApplicationController
     def set_user
       @other_user = User.find(params[:user_id])
     end
+
 end
