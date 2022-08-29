@@ -4,14 +4,12 @@ class Api::V1::RelationshipsController < ApplicationController
   def create
     current_user.follow(@other_user)
     @relationship = Relationship.find_by(followed_id: @other_user.id, follower_id: current_user.id)
-    # binding.pry
     render json: @relationship
   end
 
   def destroy
     current_user.unfollow(@other_user)
     @relationship = Relationship.find_by(followed_id: @other_user.id, follower_id: current_user.id)
-    render json: @relationship
   end
 
   private
