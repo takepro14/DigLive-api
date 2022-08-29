@@ -34,7 +34,7 @@ class Api::V1::PostsController < ApplicationController
     render json: @post.as_json(include: [
                                   {user: {only: :name}},
                                   :tags,
-                                  {comments: {include: {user: {only: :name}}}},
+                                  {comments: {include: :user}},
                                   :likes
                                 ])
   end
