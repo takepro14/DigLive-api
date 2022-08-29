@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     render json: @user.as_json(include: [
-                                :posts,
+                                { posts: { include: :user } },
                                 :active_relationships,
                                 :passive_relationships,
                               ])
