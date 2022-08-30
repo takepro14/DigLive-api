@@ -24,6 +24,8 @@ class User < ApplicationRecord
         }
   validates :email, presence: true,
         email: { allow_blank: true }
+        # TODO: 後から追加
+        # uniqueness: { case_sensitive: false }
   # 「a-zA-Z0-9_-」に一致する8文字以上
   VALID_PASSWORD_REGEX = /\A[\w\-]+\z/
   validates :password, presence: true,

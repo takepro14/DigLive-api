@@ -11,7 +11,9 @@ module UserSessionizeService
 
   # セッションcookieを削除する
   def delete_session
+    logger.debug("delete_session前")
     cookies.delete(session_key)
+    logger.debug("delete_session後")
   end
 
   private
