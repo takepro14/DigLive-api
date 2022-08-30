@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
+  mount_uploader :avatar, AvatarUploader
+
   # validates: xxが呼ばれる前に実行される
   before_validation :downcase_email
 

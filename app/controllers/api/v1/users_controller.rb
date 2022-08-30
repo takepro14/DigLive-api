@@ -16,4 +16,16 @@ class Api::V1::UsersController < ApplicationController
                                 :passive_relationships,
                               ])
   end
+
+  def create
+  end
+
+  def destroy
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:name, :email, :avatar)
+  end
 end
