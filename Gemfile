@@ -33,6 +33,7 @@ gem 'pry-rails', '~> 0.3.9'
 gem "awesome_print"
 gem 'rename'
 gem 'carrierwave', '~> 2.2', '>= 2.2.2'
+gem 'mini_magick', '~> 4.11'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
