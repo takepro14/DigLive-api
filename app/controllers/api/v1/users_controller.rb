@@ -4,8 +4,11 @@ class Api::V1::UsersController < ApplicationController
 
   def index
     users = User.all
-    render json: users.as_json(only: [:id, :name, :email, :created_at])
-    # render json: current_user.as_json(only: [:id, :name, :email, :created_at])
+    render json: users.as_json(include: [
+                                { posts: { include: :user } },
+                                :active_relationships,
+                                :passive_relationships,
+                              ])
   end
 
   def show
