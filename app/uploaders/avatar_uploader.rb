@@ -20,6 +20,11 @@ class AvatarUploader < CarrierWave::Uploader::Base
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
   # end
 
+  # デフォルト画像
+  def default_url(*args)
+    "/uploads/#{model.class.to_s.underscore}/#{mounted_as}/default.png"
+  end
+
   # Process files as they are uploaded:
   # process scale: [200, 300]
   #

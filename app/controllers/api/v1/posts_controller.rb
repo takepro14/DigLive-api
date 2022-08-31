@@ -6,7 +6,7 @@ class Api::V1::PostsController < ApplicationController
     @posts = Post.all
     # include xxxはアソシエーションが単数or複数に合わせる
     render json: @posts.as_json(include: [
-                                  { user: { only: :name } },
+                                  :user,
                                   :tags,
                                   { comments: {include: :user} },
                                   :likes
@@ -32,7 +32,7 @@ class Api::V1::PostsController < ApplicationController
     # binding.pry
     @post = Post.find(params[:id])
     render json: @post.as_json(include: [
-                                  {user: {only: :name}},
+                                  :user,
                                   :tags,
                                   {comments: {include: :user}},
                                   :likes
