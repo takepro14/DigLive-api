@@ -31,6 +31,16 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def update
+    # binding.pry
+    @user = User.find(params[:id])
+    @user.update(avatar: params[:avatar])
+
+    if @user.save
+      render json: @user
+    end
+  end
+
   def destroy
   end
 
