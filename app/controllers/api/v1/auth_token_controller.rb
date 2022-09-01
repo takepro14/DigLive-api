@@ -35,11 +35,9 @@ class Api::V1::AuthTokenController < ApplicationController
 
     def authenticate
       # この中で使われているauthenticateはhas_secure_passwordのメソッド
-      logger.debug("authenticateメソッド前")
       if !login_user.present? || !login_user.authenticate(auth_params[:password])
         raise UserAuth.not_found_exception_class
       end
-      logger.debug("authenticateメソッド後")
     end
 
     def set_refresh_token_to_cookie
