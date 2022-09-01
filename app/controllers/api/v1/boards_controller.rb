@@ -7,4 +7,11 @@ class Api::V1::BoardsController < ApplicationController
                                 ])
   end
 
+  def show
+    @board = Board.find(params[:id])
+    render json: @board.as_json(include: [
+                                  :user
+                                ])
+  end
+
 end
