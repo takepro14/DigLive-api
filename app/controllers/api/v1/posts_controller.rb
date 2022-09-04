@@ -56,7 +56,7 @@ class Api::V1::PostsController < ApplicationController
   private
 
     def post_content_params
-      params.require(:post).permit(:user_id, :content)
+      params.require(:post).permit(:user_id, :youtube_url, :content)
     end
 
     def post_tag_params
