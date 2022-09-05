@@ -1,4 +1,4 @@
-(1..30).each do |n|
+(1..15).each do |n|
   User.seed do |s|
     s.name = Faker::Name.name
     s.email = "test-user#{n}@example.com"
