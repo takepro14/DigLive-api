@@ -1,13 +1,13 @@
 # 件数用ダミーデータ
-15.times do
+20.times do
   Post.seed do |s|
-    s.user_id = rand(1..15)
+    s.user_id = rand(1..10)
     s.content = Faker::Lorem.paragraph
   end
 end
 
 # 実データに近いデータ
-contents_data = [
+posts_data = [
   {
     jannedaarc:
     {
@@ -59,10 +59,10 @@ contents_data = [
   },
 ]
 
-contents_data.each do |data|
+posts_data.each do |data|
   data.values.each do |v|
     Post.seed do |s|
-      s.user_id = rand(1..15)
+      s.user_id = rand(1..10)
       s.content = v[:content]
       s.youtube_url = v[:youtube_url]
     end
