@@ -17,6 +17,7 @@ class Api::V1::UsersController < ApplicationController
                                 { posts: { include: :user } },
                                 :active_relationships,
                                 :passive_relationships,
+                                { likes: { include: { post: { include: :user } } } }
                               ])
   end
 
