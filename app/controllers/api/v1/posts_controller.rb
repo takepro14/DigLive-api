@@ -6,10 +6,10 @@ class Api::V1::PostsController < ApplicationController
     @posts = Post.all
     # include xxxはアソシエーションが単数or複数に合わせる
     render json: @posts.as_json(include: [
-                                  :user,
+                                  { user: { include: { passive_relationships: { only: :follower_id } } } },
                                   :tags,
                                   { comments: {include: :user} },
-                                  :likes
+                                  :likes,
                                 ])
   end
 
