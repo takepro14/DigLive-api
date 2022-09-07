@@ -8,8 +8,8 @@ class Api::V1::PostsController < ApplicationController
     render json: @posts.as_json(include: [
                                   { user: { include: { passive_relationships: { only: :follower_id } } } },
                                   :tags,
-                                  { comments: {include: :user} },
-                                  :likes,
+                                  { comments: { include: :user } },
+                                  :likes
                                 ])
   end
 
@@ -20,7 +20,7 @@ class Api::V1::PostsController < ApplicationController
     if @post.save
       @post.save_tag(sent_tags)
       render json: @post.as_json(include: [
-                                  { user: { only: :name } },
+                                  { user: { include: { passive_relationships: { only: :follower_id } } } },
                                   :tags
                                 ])
     else
@@ -32,11 +32,11 @@ class Api::V1::PostsController < ApplicationController
     # binding.pry
     @post = Post.find(params[:id])
     render json: @post.as_json(include: [
-                                  :user,
-                                  :tags,
-                                  {comments: {include: :user}},
-                                  :likes
-                                ])
+                                { user: { include: { passive_relationships: { only: :follower_id } } } },
+                                :tags,
+                                { comments: { include: :user } },
+                                :likes
+                              ])
   end
 
   def destroy
@@ -46,12 +46,6 @@ class Api::V1::PostsController < ApplicationController
       render json: @post
     end
   end
-  # def search
-  #   @tag_list = Tag.all
-  #   @tag = Tag.find(params[:tag_id])
-  #   @posts = @tag.posts.all
-  #   render json: @posts
-  # end
 
   private
 
