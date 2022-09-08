@@ -42,10 +42,10 @@ class Api::V1::UsersController < ApplicationController
 
     if @user.save
       render json: @user.as_json(include: [
-                                  { posts: { include: :user } },
+                                  :posts,
                                   :active_relationships,
                                   :passive_relationships,
-                                  { likes: { include: { post: { include: :user } } } }
+                                  { likes: { include: :post } }
                                 ])
     end
   end
