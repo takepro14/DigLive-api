@@ -38,10 +38,15 @@ class Api::V1::UsersController < ApplicationController
   def update
     # binding.pry
     @user = User.find(params[:id])
-    @user.update(avatar: params[:avatar])
+    @user.update(user_params)
 
     if @user.save
-      render json: @user
+      render json: @user.as_json(include: [
+                                  { posts: { include: :user } },
+                                  :active_relationships,
+                                  :passive_relationships,
+                                  { likes: { include: { post: { include: :user } } } }
+                                ])
     end
   end
 
