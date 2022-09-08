@@ -3,8 +3,7 @@ class Api::V1::CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     if @comment.save
       render json: @comment.as_json(include: [
-                                      :users,
-                                      :post
+                                      :user
                                     ])
     end
 
