@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :boards, dependent: :destroy
+  has_many :user_genre_maps, dependent: :destroy
+  has_many :genres, through: :user_genre_maps
 
   mount_uploader :avatar, AvatarUploader
 

@@ -4,6 +4,8 @@ class Post < ApplicationRecord
   has_many :tags, through: :post_tag_maps
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :post_genre_maps, dependent: :destroy
+  has_many :genres, through: :post_genre_maps
 
   default_scope -> { order(created_at: :desc) }
   validates :content, presence: true, length: { maximum: 300 }
