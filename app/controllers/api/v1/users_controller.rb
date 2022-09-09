@@ -57,6 +57,6 @@ class Api::V1::UsersController < ApplicationController
 
   def user_params
     # TODO: activatedはメール認証にする
-    params.require(:user).permit(:name, :email, :password, :avatar, :activated)
+    params.require(:user).permit(:name, :email, :password, :profile, :avatar, :activated)
   end
 end
