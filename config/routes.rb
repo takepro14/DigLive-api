@@ -7,7 +7,8 @@ Rails.application.routes.draw do
         delete :destroy, on: :collection
       end
       resources :posts
-      resources :tags
+      resources :tags, only: [:index]
+      resources :genres, only: [:index]
       resources :comments, only: [:create, :destroy]
       resources :likes, only: [:create, :destroy]
       resources :relationships, only: [:create, :destroy]
