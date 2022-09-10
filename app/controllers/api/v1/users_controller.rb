@@ -8,6 +8,7 @@ class Api::V1::UsersController < ApplicationController
                                 { posts: { include: :user } },
                                 :active_relationships,
                                 :passive_relationships,
+                                :genres
                               ])
   end
 
@@ -17,6 +18,7 @@ class Api::V1::UsersController < ApplicationController
                                 { posts: { include: :user } },
                                 :active_relationships,
                                 :passive_relationships,
+                                :genres,
                                 { likes: { include: { post: { include: :user } } } }
                               ])
   end
@@ -36,15 +38,18 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    # binding.pry
     @user = User.find(params[:id])
     @user.update(user_params)
 
+    sent_genres = user_genre_params[:genres] === nil ? [] : user_genre_params[:genres]
+
     if @user.save
+      @user.save_genres(sent_genres)
       render json: @user.as_json(include: [
                                   :posts,
                                   :active_relationships,
                                   :passive_relationships,
+                                  :genres,
                                   { likes: { include: :post } }
                                 ])
     end
@@ -58,5 +63,9 @@ class Api::V1::UsersController < ApplicationController
   def user_params
     # TODO: activatedはメール認証にする
     params.require(:user).permit(:name, :email, :password, :profile, :avatar, :activated)
+  end
+
+  def user_genre_params
+    params.require(:user).permit(genres: [])
   end
 end

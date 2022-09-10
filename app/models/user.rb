@@ -49,6 +49,22 @@ class User < ApplicationRecord
     end
   end
 
+  def save_genres(sent_genres)
+    current_genres = self.genres.pluck(:genre_name) unless self.genres.nil?
+    old_genres = current_genres - sent_genres
+    new_genres = sent_genres - current_genres
+
+    old_genres.each do |old|
+      self.genres.delete Genre.find_by(genre_name: old)
+    end
+
+    new_genres.each do |new|
+      # ジャンルのタグはユーザ作成不可のためfind_byのみ
+      new_post_genre = Genre.find_by(genre_name: new)
+      self.genres << new_post_genre
+    end
+  end
+
   # 自分以外の同じemailのアクティブなユーザーがいる場合にtrueを返す
   def email_activated?
     users = User.where.not(id: id)
