@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :boards, dependent: :destroy
   has_many :user_genre_maps, dependent: :destroy
   has_many :genres, through: :user_genre_maps
+  has_many :board_comments, dependent: :destroy
 
   mount_uploader :avatar, AvatarUploader
 
