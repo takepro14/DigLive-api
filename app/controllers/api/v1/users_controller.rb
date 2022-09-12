@@ -5,7 +5,7 @@ class Api::V1::UsersController < ApplicationController
   def index
     users = User.all
     render json: users.as_json(include: [
-                                { posts: { include: :user } },
+                                { posts: { include: [:user, :likes] } },
                                 :active_relationships,
                                 :passive_relationships,
                                 :genres
@@ -15,11 +15,10 @@ class Api::V1::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     render json: @user.as_json(include: [
-                                { posts: { include: :user } },
+                                { posts: { include: [:user, :likes] } },
                                 :active_relationships,
                                 :passive_relationships,
-                                :genres,
-                                { likes: { include: { post: { include: :user } } } }
+                                :genres
                               ])
   end
 
