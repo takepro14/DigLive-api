@@ -10,29 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_12_060219) do
+ActiveRecord::Schema.define(version: 2022_09_09_082709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "board_comments", force: :cascade do |t|
-    t.text "comment"
-    t.bigint "board_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["board_id"], name: "index_board_comments_on_board_id"
-    t.index ["user_id"], name: "index_board_comments_on_user_id"
-  end
-
-  create_table "boards", force: :cascade do |t|
-    t.string "title", null: false
-    t.text "description", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_boards_on_user_id"
-  end
 
   create_table "comments", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -125,9 +106,6 @@ ActiveRecord::Schema.define(version: 2022_09_12_060219) do
     t.text "profile"
   end
 
-  add_foreign_key "board_comments", "boards"
-  add_foreign_key "board_comments", "users"
-  add_foreign_key "boards", "users"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "posts"

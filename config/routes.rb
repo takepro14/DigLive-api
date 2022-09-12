@@ -10,10 +10,8 @@ Rails.application.routes.draw do
       resources :tags, only: [:index]
       resources :genres, only: [:index]
       resources :comments, only: [:create, :destroy]
-      resources :board_comments, only: [:create, :destroy]
       resources :likes, only: [:create, :destroy]
       resources :relationships, only: [:create, :destroy]
-      resources :boards
     end
   end
 end
