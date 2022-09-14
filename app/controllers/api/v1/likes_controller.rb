@@ -7,7 +7,7 @@ class Api::V1::LikesController < ApplicationController
     @like = Like.new(like_params)
 
     if @like.save
-      @like.create_notification_like(like.user_id, like.post_id)
+      @like.create_notification_like(@like.user_id, @like.post_id)
       render status: :created, json: @like
     end
 

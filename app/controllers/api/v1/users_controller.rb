@@ -8,7 +8,8 @@ class Api::V1::UsersController < ApplicationController
                                 { posts: { include: [:user, :likes] } },
                                 :active_relationships,
                                 :passive_relationships,
-                                :genres
+                                :genres,
+                                { likes: { include: :post } }
                               ])
   end
 
@@ -18,7 +19,8 @@ class Api::V1::UsersController < ApplicationController
                                 { posts: { include: [:user, :likes] } },
                                 :active_relationships,
                                 :passive_relationships,
-                                :genres
+                                :genres,
+                                { likes: { include: { post: { include: :user } } } }
                               ])
   end
 
