@@ -9,7 +9,7 @@ class Api::V1::UsersController < ApplicationController
                                 :active_relationships,
                                 :passive_relationships,
                                 :genres,
-                                { likes: { include: :post } }
+                                { likes: { include: { post: { include: :user } } } }
                               ])
   end
 
@@ -20,7 +20,7 @@ class Api::V1::UsersController < ApplicationController
                                 :active_relationships,
                                 :passive_relationships,
                                 :genres,
-                                { likes: { include: { post: { include: :user } } } }
+                                { likes: { include: { post: { include: :user  } } } }
                               ])
   end
 
