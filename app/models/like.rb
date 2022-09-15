@@ -11,10 +11,10 @@ class Like < ApplicationRecord
   ##################################################
   def create_notification_like(visitor_id, post_id)
     # 通知生成済みかどうかチェックする
-    notice_obj_like = Notification.where(["visitor_id = ? and post_id = ? and action = ? ", visitor_id, post_id, 'like'])
+    notification_like = Notification.where(["visitor_id = ? and post_id = ? and action = ? ", visitor_id, post_id, 'like'])
 
     # 通知生成済みではない時のみ生成する
-    if notice_obj_like.blank?
+    if notification_like.blank?
       visitor = User.find(visitor_id)
       post = Post.find(post_id)
       notification = visitor.active_notifications.new(

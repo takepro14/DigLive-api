@@ -1,8 +1,5 @@
 class Api::V1::NotificationsController < ApplicationController
 
-  ##################################################
-  # 通知全件取得
-  ##################################################
   def index
     # binding.pry
     @user = User.find(current_user.id)
@@ -11,8 +8,7 @@ class Api::V1::NotificationsController < ApplicationController
     render json: @notifications.as_json(include:[
                                             :visitor,
                                             :visited,
-                                            :post,
-                                            :comment
+                                            { post: { include: :comments } }
                                           ]
                                         )
   end
