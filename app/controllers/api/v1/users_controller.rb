@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
   before_action :authenticate_active_user, except: [:create]
 
   def index
-    users = User.all
+    users = User.includes(:posts)
     render json: users.as_json(include: [
                                 { posts: { include: [:user, :likes] } },
                                 :active_relationships,
