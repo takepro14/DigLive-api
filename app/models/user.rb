@@ -1,8 +1,14 @@
 require "validator/email_validator"
-
 class User < ApplicationRecord
-  # Token生成モジュール
+
   include TokenGenerateService
+  mount_uploader :avatar, AvatarUploader
+  before_validation :downcase_email
+  has_secure_password
+
+  # --------------------------------------------------
+  # アソシエーション
+  # --------------------------------------------------
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
@@ -15,12 +21,9 @@ class User < ApplicationRecord
   has_many :active_notifications, class_name: 'Notification', foreign_key: 'visitor_id', dependent: :destroy
   has_many :passive_notifications, class_name: 'Notification', foreign_key: 'visited_id', dependent: :destroy
 
-  mount_uploader :avatar, AvatarUploader
-
-  # validates: xxが呼ばれる前に実行される
-  before_validation :downcase_email
-
-  has_secure_password
+  # --------------------------------------------------
+  # バリデーション
+  # --------------------------------------------------
   validates :name, presence: true,
         length: {
           maximum: 30,
@@ -44,12 +47,18 @@ class User < ApplicationRecord
               },
               allow_nil: true
 
+  # --------------------------------------------------
+  # クラスメソッド
+  # --------------------------------------------------
   class << self
     def find_by_activated(email)
       find_by(email: email, activated: true)
     end
   end
 
+  # --------------------------------------------------
+  # インスタンスメソッド
+  # --------------------------------------------------
   def save_genres(sent_genres)
     current_genres = self.genres.pluck(:genre_name) unless self.genres.nil?
     old_genres = current_genres - sent_genres
@@ -99,18 +108,9 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
-  # ---------- フォロー通知 ----------
-  def create_notification_follow!(current_user)
-    notice_obj_follow = Notification.where(["visitor_id = ? and visited_id = ? and action = ? ",current_user.id, id, 'follow'])
-    if notice_obj_follow.blank?
-      notification = current_user.active_notifications.new(
-        visited_id: id,
-        action: 'follow'
-      )
-      notification.save if notification.valid?
-    end
-  end
-
+  # --------------------------------------------------
+  # プライベートメソッド
+  # --------------------------------------------------
   private
 
     def downcase_email

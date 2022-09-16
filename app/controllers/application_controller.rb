@@ -7,6 +7,10 @@ class ApplicationController < ActionController::API
   # CSRF対策
   before_action :xhr_request?
 
+
+  # --------------------------------------------------
+  # プライベートメソッド
+  # --------------------------------------------------
   private
 
     # XMLHttpRequestでない場合は403エラーを返す

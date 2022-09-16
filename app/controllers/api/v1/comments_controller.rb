@@ -1,5 +1,8 @@
 class Api::V1::CommentsController < ApplicationController
 
+  # --------------------------------------------------
+  # コメントの作成
+  # --------------------------------------------------
   def create
     comment = Comment.new(comment_params)
     if comment.save
@@ -10,11 +13,17 @@ class Api::V1::CommentsController < ApplicationController
     end
   end
 
+  # --------------------------------------------------
+  # コメントの削除
+  # --------------------------------------------------
   def destroy
     comment = Comment.find(params[:id])
     comment.destroy
   end
 
+  # --------------------------------------------------
+  # プライベートメソッド
+  # --------------------------------------------------
   private
 
     def comment_params

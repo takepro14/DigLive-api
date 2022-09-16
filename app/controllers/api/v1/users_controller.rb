@@ -2,6 +2,10 @@ class Api::V1::UsersController < ApplicationController
   # 新規登録時は実行したくないのでexcept
   before_action :authenticate_active_user, except: [:create]
 
+
+  # --------------------------------------------------
+  # ユーザ一覧の表示
+  # --------------------------------------------------
   def index
     users = User.includes(:posts)
     render json: users.as_json(include: [
@@ -13,6 +17,9 @@ class Api::V1::UsersController < ApplicationController
                               ])
   end
 
+  # --------------------------------------------------
+  # ユーザの表示
+  # --------------------------------------------------
   def show
     @user = User.find(params[:id])
     render json: @user.as_json(include: [
@@ -24,6 +31,9 @@ class Api::V1::UsersController < ApplicationController
                               ])
   end
 
+  # --------------------------------------------------
+  # ユーザの作成
+  # --------------------------------------------------
   def create
     # binding.pry
     @user = User.new(user_params)
@@ -38,6 +48,9 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  # --------------------------------------------------
+  # ユーザの更新
+  # --------------------------------------------------
   def update
     @user = User.find(params[:id])
     @user.update(user_params)
@@ -56,9 +69,16 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  # --------------------------------------------------
+  # ユーザの削除
+  # --------------------------------------------------
+  # TODO: 実装予定
   def destroy
   end
 
+  # --------------------------------------------------
+  # プライベートメソッド
+  # --------------------------------------------------
   private
 
   def user_params

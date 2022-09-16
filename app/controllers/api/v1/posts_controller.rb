@@ -1,6 +1,9 @@
 class Api::V1::PostsController < ApplicationController
   before_action :authenticate_active_user
 
+  # --------------------------------------------------
+  # 投稿一覧の表示
+  # --------------------------------------------------
   def index
     # @tag_list = Tag.all
     @posts = Post.all
@@ -14,6 +17,9 @@ class Api::V1::PostsController < ApplicationController
                                 ])
   end
 
+  # --------------------------------------------------
+  # 投稿の作成
+  # --------------------------------------------------
   def create
     @post = Post.new(post_content_params)
     sent_tags = post_tag_params[:tags] === nil ? [] : post_tag_params[:tags]
@@ -32,6 +38,9 @@ class Api::V1::PostsController < ApplicationController
     end
   end
 
+  # --------------------------------------------------
+  # 投稿の表示
+  # --------------------------------------------------
   def show
     # binding.pry
     @post = Post.find(params[:id])
@@ -44,6 +53,9 @@ class Api::V1::PostsController < ApplicationController
                               ])
   end
 
+  # --------------------------------------------------
+  # 投稿の削除
+  # --------------------------------------------------
   def destroy
     @post = Post.find(params[:id])
 
@@ -52,6 +64,9 @@ class Api::V1::PostsController < ApplicationController
     end
   end
 
+  # --------------------------------------------------
+  # プライベートメソッド
+  # --------------------------------------------------
   private
 
     def post_content_params

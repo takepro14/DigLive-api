@@ -2,6 +2,9 @@
 class Api::V1::RelationshipsController < ApplicationController
   before_action :set_user
 
+  # --------------------------------------------------
+  # リレーションの作成
+  # --------------------------------------------------
   def create
     current_user.follow(@other_user)
     @relationship = Relationship.find_by(followed_id: @other_user.id, follower_id: current_user.id)
@@ -9,12 +12,18 @@ class Api::V1::RelationshipsController < ApplicationController
     render json: @relationship
   end
 
+  # --------------------------------------------------
+  # リレーションの削除
+  # --------------------------------------------------
   def destroy
     current_user.unfollow(@other_user)
     # @relationship = Relationship.find_by(followed_id: @other_user.id, follower_id: current_user.id)
     # render json: @relationship
   end
 
+  # --------------------------------------------------
+  # プライベートメソッド
+  # --------------------------------------------------
   private
 
     def set_user

@@ -1,9 +1,20 @@
 class Comment < ApplicationRecord
+
+  # --------------------------------------------------
+  # アソシエーション
+  # --------------------------------------------------
   belongs_to :user
   belongs_to :post
   has_many :notifications, dependent: :destroy
+
+  # --------------------------------------------------
+  # バリデーション
+  # --------------------------------------------------
   validates :comment, presence: true, length: { maximum: 300 }
 
+  # --------------------------------------------------
+  # メソッド
+  # --------------------------------------------------
   def create_notification_comment(visitor_id, post_id, comment_id)
     visitor = User.find(visitor_id)
     post = Post.find(post_id)
