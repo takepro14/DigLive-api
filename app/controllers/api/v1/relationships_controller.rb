@@ -2,14 +2,13 @@
 class Api::V1::RelationshipsController < ApplicationController
   before_action :set_user
 
-  #---------- フォローする ----------
   def create
     current_user.follow(@other_user)
     @relationship = Relationship.find_by(followed_id: @other_user.id, follower_id: current_user.id)
+    @relationship.create_notification_relationship(@relationship.followed_id, @relationship.follower_id)
     render json: @relationship
   end
 
-  #---------- フォロー解除する ----------
   def destroy
     current_user.unfollow(@other_user)
     # @relationship = Relationship.find_by(followed_id: @other_user.id, follower_id: current_user.id)

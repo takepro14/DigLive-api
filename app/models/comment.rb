@@ -1,9 +1,7 @@
 class Comment < ApplicationRecord
-
   belongs_to :user
   belongs_to :post
   has_many :notifications, dependent: :destroy
-
   validates :comment, presence: true, length: { maximum: 300 }
 
   def create_notification_comment(visitor_id, post_id, comment_id)
