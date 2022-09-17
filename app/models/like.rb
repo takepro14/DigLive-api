@@ -1,16 +1,9 @@
 class Like < ApplicationRecord
 
-  # --------------------------------------------------
-  # アソシエーション
-  # --------------------------------------------------
   belongs_to :user
   belongs_to :post
 
-  # --------------------------------------------------
-  # メソッド
-  # --------------------------------------------------
   def create_notification_like(visitor_id, post_id)
-    # 通知生成済みかどうかチェックする
     notification_like = Notification.where(["visitor_id = ? and post_id = ? and action = ? ", visitor_id, post_id, 'like'])
 
     # 通知生成済みではない時のみ生成する

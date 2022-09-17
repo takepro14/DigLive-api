@@ -1,9 +1,6 @@
 class Post < ApplicationRecord
   default_scope -> { order(created_at: :desc) }
 
-  # --------------------------------------------------
-  # アソシエーション
-  # --------------------------------------------------
   belongs_to :user
   has_many :post_tag_maps, dependent: :destroy
   has_many :tags, through: :post_tag_maps
@@ -13,15 +10,8 @@ class Post < ApplicationRecord
   has_many :genres, through: :post_genre_maps
   has_many :notifications, dependent: :destroy
 
-  # --------------------------------------------------
-  # バリデーション
-  # --------------------------------------------------
   validates :content, presence: true, length: { maximum: 300 }
 
-  # --------------------------------------------------
-  # メソッド
-  # --------------------------------------------------
-  # 新規投稿時のタグ保存
   def save_tag(sent_tags)
     current_tags = self.tags.pluck(:tag_name) unless self.tags.nil?
     old_tags = current_tags - sent_tags
@@ -38,7 +28,6 @@ class Post < ApplicationRecord
     end
   end
 
-  # 新規投稿時のジャンル保存
   def save_genre(sent_genres)
     current_genres = self.genres.pluck(:genre_name) unless self.genres.nil?
     old_genres = current_genres - sent_genres

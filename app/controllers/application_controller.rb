@@ -8,11 +8,7 @@ class ApplicationController < ActionController::API
   before_action :xhr_request?
 
 
-  # --------------------------------------------------
-  # プライベートメソッド
-  # --------------------------------------------------
   private
-
     # XMLHttpRequestでない場合は403エラーを返す
     def xhr_request?
       # リクエストヘッダ X-Requested-With: 'XMLHttpRequest' の存在を判定

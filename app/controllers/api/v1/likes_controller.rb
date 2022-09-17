@@ -1,8 +1,5 @@
 class Api::V1::LikesController < ApplicationController
 
-  # --------------------------------------------------
-  # いいねの作成
-  # --------------------------------------------------
   def create
     like = Like.new(like_params)
 
@@ -14,9 +11,6 @@ class Api::V1::LikesController < ApplicationController
 
   end
 
-  # --------------------------------------------------
-  # いいねの削除
-  # --------------------------------------------------
   def destroy
     @like = Like.find(params[:id])
     @like.destroy
@@ -24,9 +18,7 @@ class Api::V1::LikesController < ApplicationController
     # render status: :success
   end
 
-  # --------------------------------------------------
-  # プライベートメソッド
-  # --------------------------------------------------
+
   private
 
     def like_params
