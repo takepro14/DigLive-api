@@ -1,4 +1,4 @@
-10.times do |t|
+5.times do |t|
   # フォロー
   Notification.seed do |s|
     s.action = 'follow'

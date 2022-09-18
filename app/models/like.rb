@@ -3,6 +3,8 @@ class Like < ApplicationRecord
   belongs_to :user
   belongs_to :post
 
+  validates :user_id, uniqueness: { scope: :post_id }
+
   def create_notification_like(visitor_id, post_id)
     notification_like = Notification.where(["visitor_id = ? and post_id = ? and action = ? ", visitor_id, post_id, 'like'])
 

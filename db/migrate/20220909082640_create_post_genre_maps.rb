@@ -6,5 +6,6 @@ class CreatePostGenreMaps < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
+    add_index :post_genre_maps, [:post_id, :genre_id], unique: true
   end
 end

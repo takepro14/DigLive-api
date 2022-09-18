@@ -5,5 +5,6 @@ class PostGenreMap < ApplicationRecord
 
   validates :post_id, presence: true
   validates :genre_id, presence: true
+  validates :post_id, uniqueness: { scope: :genre_id }
 
 end

@@ -1,6 +1,6 @@
-20.times do
+(1..15).each do |n|
   PostGenreMap.seed do |s|
-    s.post_id = rand(1..20)
-    s.genre_id = rand(1..20)
+    s.post_id = n
+    s.genre_id = n + 1
   end
 end

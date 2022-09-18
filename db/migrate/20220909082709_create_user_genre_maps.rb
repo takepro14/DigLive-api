@@ -6,5 +6,6 @@ class CreateUserGenreMaps < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
+    add_index :user_genre_maps, [:user_id, :genre_id], unique: true
   end
 end

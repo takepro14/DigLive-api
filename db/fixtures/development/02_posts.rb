@@ -1,52 +1,108 @@
 # 実データに近いデータ
 posts_data = [
   {
-    jannedaarc:
+    janne_da_arc__dearly__diamond_virgin:
     {
       youtube_url: 'https://www.youtube.com/watch?v=UkQmLFpYNxs',
-      content: '青春の一曲です！キーボードのkiyoさんがめっちゃいい仕事してる。'
+      content: '音源よりキーボードの音がよく聴こえて良い。なつい。'
     }
   },
   {
-    avril:
+    avril_lavigne__first_take__complicated:
     {
       youtube_url: 'https://www.youtube.com/watch?v=_P9zR5KaPsc',
-      content: '衝撃を受けた一曲'
+      content: 'FIRST TAKEでこれはうますぎる。'
     }
   },
   {
-    slipknot:
+    vaundy__kataribe:
+    {
+      youtube_url: 'https://www.youtube.com/watch?v=5p6aQKbIK3E',
+      content: 'benefitsライブで聴きたいなー。めっちゃ90年代UKという感じでエモい。'
+    }
+  },
+  {
+    slipknot__download_festival:
     {
       youtube_url: 'https://www.youtube.com/watch?v=QO3j9niG1Og&t=3663s',
-      content: 'Dualityが最高'
+      content: 'いいなー。Dualityが最高。'
     }
   },
   {
-    xjapan:
+    xjapan__lunatic_fest:
     {
       youtube_url: 'https://www.youtube.com/watch?v=KZJpAGCtt28',
-      content: 'ライブ見てみたい'
+      content: '神フェス'
     }
   },
   {
-    larcenciel:
+    larc_en_ciel__larcasino__pieces:
     {
       youtube_url: 'https://www.youtube.com/watch?v=g6OlJ8WVPS8',
-      content: '個人的にNo.1のPiecesかなと！'
+      content: '個人的にNo.1のPiecesです!なんというか美しい・・'
     }
   },
   {
-    crossfaith:
+    crossfaith__coldrain__sataniccarnival:
     {
-      youtube_url: 'https://www.youtube.com/watch?v=zK3tjL0Q_FI',
-      content: '海神'
+      youtube_url: 'https://www.youtube.com/watch?v=w6T68iG49Vs',
+      content: 'この二人のFaintは本当にめっちゃクオリティ高い！！！'
     }
   },
   {
-    bringmethehorizon:
+    bring_me_the_horizon__rock_am_ring:
     {
       youtube_url: 'https://www.youtube.com/watch?v=Ig7dzqPBHQk',
-      content: 'この衣装めっちゃ好き！めっちゃ画質良い'
+      content: '衣装と髪型が気に入ってます！MANTRA〜HOUSE OF WOLVES〜medicineの流れが最高'
+    }
+  },
+  {
+    utada_hikaru__laughter_in_the_dark__automatic:
+    {
+      youtube_url: 'https://www.youtube.com/watch?v=i3ZRyq1c-Zo',
+      content: 'メンバー紹介から歌に入る流れが好き。'
+    }
+  },
+  {
+    king_gnu__studio_live:
+    {
+      youtube_url: 'https://www.youtube.com/watch?v=dP8VC-422es',
+      content: 'スタジオセッション良い！'
+    }
+  },
+  {
+    one_ok_rock__mighty_long_fall__kanzen_kankaku_dreamer:
+    {
+      youtube_url: 'https://www.youtube.com/watch?v=VMD0hp8Po3o',
+      content: 'ライブでこの歌唱力すごい'
+    }
+  },
+  {
+    marilyn_manson__unknown__this_is_the_new_shit:
+    {
+      youtube_url: 'https://www.youtube.com/watch?v=JY9a_xuv13g',
+      content: '狂気。この頃のテイストめっちゃ好きだった。Tim Scold製'
+    }
+  },
+  {
+    bump_of_chicken__aurora_ark__aurora:
+    {
+      youtube_url: 'https://www.youtube.com/watch?v=M2bQzkg8R8A',
+      content: '始まり方が最高。フェイクも最高。'
+    }
+  },
+  {
+    ed_sheeran__carpool_karaoke:
+    {
+      youtube_url: 'https://www.youtube.com/watch?v=ckdsJ-LaCvM',
+      content: '相方も普通にうまいw'
+    }
+  },
+  {
+    hyde__teru__jack_in_the_box:
+    {
+      youtube_url: 'https://www.youtube.com/watch?v=4LlKf9HCC1I',
+      content: '奇跡のコラボ'
     }
   },
 ]
@@ -58,13 +114,5 @@ posts_data.each do |data|
       s.content = v[:content]
       s.youtube_url = v[:youtube_url]
     end
-  end
-end
-
-# 件数用ダミーデータ
-20.times do
-  Post.seed do |s|
-    s.user_id = rand(1..10)
-    s.content = Faker::Lorem.paragraph
   end
 end

@@ -5,6 +5,7 @@ class Relationship < ApplicationRecord
 
   validates :follower_id, presence: true
   validates :followed_id, presence: true
+  validates :follower_id, uniqueness: { scope: :followed_id }
 
   def create_notification_relationship(visited_id, visitor_id)
     notification_follow = Notification.where(["visited_id = ? and visitor_id = ? and action = ? ", visited_id, visitor_id, 'follow'])

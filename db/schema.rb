@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_101322) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -61,6 +62,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_101322) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["genre_id"], name: "index_post_genre_maps_on_genre_id"
+    t.index ["post_id", "genre_id"], name: "index_post_genre_maps_on_post_id_and_genre_id", unique: true
     t.index ["post_id"], name: "index_post_genre_maps_on_post_id"
   end
 
@@ -69,6 +71,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_101322) do
     t.bigint "tag_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id", "tag_id"], name: "index_post_tag_maps_on_post_id_and_tag_id", unique: true
     t.index ["post_id"], name: "index_post_tag_maps_on_post_id"
     t.index ["tag_id"], name: "index_post_tag_maps_on_tag_id"
   end
@@ -105,6 +108,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_101322) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["genre_id"], name: "index_user_genre_maps_on_genre_id"
+    t.index ["user_id", "genre_id"], name: "index_user_genre_maps_on_user_id_and_genre_id", unique: true
     t.index ["user_id"], name: "index_user_genre_maps_on_user_id"
   end
 
