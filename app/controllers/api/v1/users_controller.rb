@@ -4,12 +4,20 @@ class Api::V1::UsersController < ApplicationController
 
   def index
     users = User.includes(:posts)
-    render json: users.as_json(include: [
-                                { posts: { include: [:user, :likes] } },
+    render json: users.as_json(include: [{
+                                posts: {
+                                  include: [
+                                    { user: { include: :passive_relationships } },
+                                    { comments: { include: :user } },
+                                    :likes,
+                                    :tags,
+                                    :genres
+                                  ]
+                                }
+                              },
                                 :active_relationships,
                                 :passive_relationships,
-                                :genres,
-                                { likes: { include: { post: { include: :user } } } }
+                                :genres
                               ])
   end
 
