@@ -116,3 +116,11 @@ posts_data.each do |data|
     end
   end
 end
+
+# 大量データ用
+100.times do
+  Post.seed do |s|
+    s.user_id = rand(1..10)
+    s.content = Faker::Lorem.paragraph
+  end
+end
