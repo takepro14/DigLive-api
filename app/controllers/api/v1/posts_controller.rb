@@ -1,15 +1,19 @@
 class Api::V1::PostsController < ApplicationController
   before_action :authenticate_active_user
+  include Pagination
 
   def index
-    @posts = Post.all
-    render json: @posts.as_json(include: [
+    posts = Post.all.page(params[:page]).per(10)
+    pagination = resources_with_pagination(posts)
+    @posts = posts.as_json(include: [
                                   { user: { include: { passive_relationships: { only: :follower_id } } } },
                                   :tags,
                                   { comments: { include: :user } },
                                   :likes,
                                   :genres
                                 ])
+    object = { posts: @posts, kaminari: pagination }
+    render json: object
   end
 
   def create
