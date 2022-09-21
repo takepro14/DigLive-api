@@ -1,24 +1,42 @@
 class Api::V1::UsersController < ApplicationController
   # 新規登録時は実行したくないのでexcept
   before_action :authenticate_active_user, except: [:create]
+  include Pagination
 
   def index
-    users = User.includes(:posts)
-    render json: users.as_json(include: [{
-                                posts: {
-                                  include: [
-                                    { user: { include: :passive_relationships } },
-                                    { comments: { include: :user } },
-                                    :likes,
-                                    :tags,
-                                    :genres
-                                  ]
-                                }
-                              },
-                                :active_relationships,
-                                :passive_relationships,
-                                :genres
-                              ])
+    # home - follow
+    if params[:user_id]
+      user = User.find(params[:user_id])
+      followingUsers = user.following.includes(:posts)
+      users = Kaminari.paginate_array(followingUsers).page(params[:page]).per(10)
+      pagination = resources_with_pagination(users)
+
+    # home - new
+    else
+      users_tmp = User.includes(:posts)
+      # includeで配列になるのでpaginate_arrayを噛ませる
+      users =  Kaminari.paginate_array(users_tmp).page(params[:page]).per(10)
+      pagination = resources_with_pagination(users)
+    end
+
+    # common
+    @users = users.as_json(include: [{
+                                  posts: {
+                                    include: [
+                                      { user: { include: :passive_relationships } },
+                                      { comments: { include: :user } },
+                                      :likes,
+                                      :tags,
+                                      :genres
+                                    ]
+                                  }
+                                },
+                                  :active_relationships,
+                                  :passive_relationships,
+                                  :genres
+                                ])
+      object = { users: @users, kaminari: pagination }
+      render json: object
   end
 
   def show

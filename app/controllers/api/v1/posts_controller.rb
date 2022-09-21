@@ -3,37 +3,27 @@ class Api::V1::PostsController < ApplicationController
   include Pagination
 
   def index
-    # フォロータブ
+    # home - follow
     if params[:user_id]
       user = User.find(params[:user_id])
       followingPosts = user.following.map{|f| f.posts}.flatten
-
       posts = Kaminari.paginate_array(followingPosts).page(params[:page]).per(10)
       pagination = resources_with_pagination(posts)
-      @posts = posts.as_json(include: [
-                                    { user: { include: { passive_relationships: { only: :follower_id } } } },
-                                    :tags,
-                                    { comments: { include: :user } },
-                                    :likes,
-                                    :genres
-                                  ])
-      object = { posts: @posts, kaminari: pagination }
-      render json: object
-
-    # 最新タブ
+    # home - new
     else
       posts = Post.all.page(params[:page]).per(10)
       pagination = resources_with_pagination(posts)
-      @posts = posts.as_json(include: [
-                                    { user: { include: { passive_relationships: { only: :follower_id } } } },
-                                    :tags,
-                                    { comments: { include: :user } },
-                                    :likes,
-                                    :genres
-                                  ])
-      object = { posts: @posts, kaminari: pagination }
-      render json: object
     end
+
+    @posts = posts.as_json(include: [
+                            { user: { include: { passive_relationships: { only: :follower_id } } } },
+                            :tags,
+                            { comments: { include: :user } },
+                            :likes,
+                            :genres
+                          ])
+    object = { posts: @posts, kaminari: pagination }
+    render json: object
   end
 
   def create
