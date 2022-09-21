@@ -15,6 +15,7 @@ class Api::V1::PostsController < ApplicationController
       pagination = resources_with_pagination(posts)
     end
 
+    # common
     @posts = posts.as_json(include: [
                             { user: { include: { passive_relationships: { only: :follower_id } } } },
                             :tags,
