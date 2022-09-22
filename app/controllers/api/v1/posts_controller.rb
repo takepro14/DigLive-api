@@ -9,16 +9,19 @@ class Api::V1::PostsController < ApplicationController
       user = User.find(params[:user_id])
       followingPosts = user.following.map{|f| f.posts}.flatten
       posts = Kaminari.paginate_array(followingPosts).page(params[:page]).per(10)
+
     # ----- /users/id: 投稿タブ -----
     elsif params[:post_user_id]
       user = User.find(params[:post_user_id])
       userPosts = user.posts
       posts = Kaminari.paginate_array(userPosts).page(params[:page]).per(10)
+
     # ----- /users/id: いいねタブ -----
     elsif params[:like_user_id]
       user = User.find(params[:like_user_id])
       userLikes = user.likes.map {|like| like.post }
       posts = Kaminari.paginate_array(userLikes).page(params[:page]).per(10)
+
     # ----- /home: 最新タブ -----
     else
       posts = Post.all.page(params[:page]).per(10)
@@ -74,9 +77,9 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def search
-    # ========== キーワード ==========
+    # ========== キーワード検索 ==========
     if params[:post_keyword]
-      posts = Post.search(params[:post_keyword]).includes([
+      posts = Post.keyword_search_posts(params[:post_keyword]).includes([
                                                           { user: :passive_relationships },
                                                           :tags,
                                                           { comments: :user},
@@ -90,10 +93,38 @@ class Api::V1::PostsController < ApplicationController
                                   :likes,
                                   :genres
                                 ])
-    # ========== ジャンル ==========
+    # ========== ジャンル検索 ==========
     elsif params[:post_genre]
-    # ========== タグ ==========
+      posts = Genre.genre_search_posts(params[:post_genre]).includes([
+                                                          { user: :passive_relationships },
+                                                          :tags,
+                                                          { comments: :user},
+                                                          :likes,
+                                                          :genres
+                                                        ])
+      render json: posts.as_json(include: [
+                                  { user: { include: { passive_relationships: { only: :follower_id } } } },
+                                  :tags,
+                                  { comments: { include: :user } },
+                                  :likes,
+                                  :genres
+                                  ])
+    # ========== タグ検索 ==========
     elsif params[:post_tag]
+      posts = Tag.tag_search_posts(params[:post_tag]).includes([
+                                                          { user: :passive_relationships },
+                                                          :tags,
+                                                          { comments: :user},
+                                                          :likes,
+                                                          :genres
+                                                        ])
+      render json: posts.as_json(include: [
+                                  { user: { include: { passive_relationships: { only: :follower_id } } } },
+                                  :tags,
+                                  { comments: { include: :user } },
+                                  :likes,
+                                  :genres
+                                  ])
     end
   end
 
