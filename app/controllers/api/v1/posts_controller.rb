@@ -79,6 +79,8 @@ class Api::V1::PostsController < ApplicationController
   def search
     # ========== キーワード検索 ==========
     if params[:post_keyword]
+      # タイミングにより空パラメータの時に検索されてしまう事象の回避
+      return if params[:post_keyword] == ''
       posts = Post.keyword_search_posts(params[:post_keyword]).includes([
                                                           { user: :passive_relationships },
                                                           :tags,
@@ -95,6 +97,7 @@ class Api::V1::PostsController < ApplicationController
                                 ])
     # ========== ジャンル検索 ==========
     elsif params[:post_genre]
+      return if params[:post_genre] == ''
       posts = Genre.genre_search_posts(params[:post_genre]).includes([
                                                           { user: :passive_relationships },
                                                           :tags,
@@ -111,6 +114,7 @@ class Api::V1::PostsController < ApplicationController
                                   ])
     # ========== タグ検索 ==========
     elsif params[:post_tag]
+      return if params[:post_tag] == ''
       posts = Tag.tag_search_posts(params[:post_tag]).includes([
                                                           { user: :passive_relationships },
                                                           :tags,

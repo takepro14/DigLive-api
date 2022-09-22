@@ -106,6 +106,7 @@ class Api::V1::UsersController < ApplicationController
   def search
     # ========== キーワード検索 ==========
     if params[:user_keyword]
+      return if params[:user_keyword] == ''
       users = User.keyword_search_users(params[:user_keyword]).includes([
                                                                         { posts: [
                                                                           { user: :passive_relationships },
@@ -136,6 +137,7 @@ class Api::V1::UsersController < ApplicationController
                                           ])
     # ========== ジャンル検索 ==========
     elsif params[:user_genre]
+      return if params[:user_genre] == ''
       users = Genre.genre_search_users(params[:user_genre]).includes([
                                                                         { posts: [
                                                                           { user: :passive_relationships },
