@@ -96,6 +96,10 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
+  # キーワードでユーザーを検索
+  def self.keyword_search_users(keyword)
+    self.where("name LIKE?", "%#{keyword}%").or(self.where("profile LIKE?", "%#{keyword}%"))
+  end
 
   private
 

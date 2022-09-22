@@ -11,4 +11,10 @@ class Genre < ApplicationRecord
     genre.posts
   end
 
+  # ジャンルでユーザーを検索
+  def self.genre_search_users(genre)
+    genre = self.find_by(genre_name: genre)
+    genre.users
+  end
+
 end
