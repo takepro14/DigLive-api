@@ -3,27 +3,28 @@ class Api::V1::PostsController < ApplicationController
   include Pagination
 
   def index
-    # ---------- /home: フォロータブ ----------
+    # ========== 個別処理 ==========
+    # ----- /home: フォロータブ -----
     if params[:user_id]
       user = User.find(params[:user_id])
       followingPosts = user.following.map{|f| f.posts}.flatten
       posts = Kaminari.paginate_array(followingPosts).page(params[:page]).per(10)
-    # ---------- /users/id: 投稿タブ ----------
+    # ----- /users/id: 投稿タブ -----
     elsif params[:post_user_id]
       user = User.find(params[:post_user_id])
       userPosts = user.posts
       posts = Kaminari.paginate_array(userPosts).page(params[:page]).per(10)
-    # ---------- /users/id: いいねタブ ----------
+    # ----- /users/id: いいねタブ -----
     elsif params[:like_user_id]
       user = User.find(params[:like_user_id])
       userLikes = user.likes.map {|like| like.post }
       posts = Kaminari.paginate_array(userLikes).page(params[:page]).per(10)
-    # ---------- /home: 最新タブ ----------
+    # ----- /home: 最新タブ -----
     else
       posts = Post.all.page(params[:page]).per(10)
     end
 
-    # ---------- 共通処理 ----------
+    # ========== 共通処理 ==========
     pagination = resources_with_pagination(posts)
     @posts = posts.as_json(include: [
                             { user: { include: { passive_relationships: { only: :follower_id } } } },
@@ -69,6 +70,30 @@ class Api::V1::PostsController < ApplicationController
     @post = Post.find(params[:id])
     if @post.destroy
       render json: @post
+    end
+  end
+
+  def search
+    # ========== キーワード ==========
+    if params[:post_keyword]
+      posts = Post.search(params[:post_keyword]).includes([
+                                                          { user: :passive_relationships },
+                                                          :tags,
+                                                          { comments: :user},
+                                                          :likes,
+                                                          :genres
+                                                        ])
+      render json: posts.as_json(include: [
+                                  { user: { include: { passive_relationships: { only: :follower_id } } } },
+                                  :tags,
+                                  { comments: { include: :user } },
+                                  :likes,
+                                  :genres
+                                ])
+    # ========== ジャンル ==========
+    elsif params[:post_genre]
+    # ========== タグ ==========
+    elsif params[:post_tag]
     end
   end
 

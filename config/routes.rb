@@ -6,7 +6,9 @@ Rails.application.routes.draw do
         post :refresh, on: :collection
         delete :destroy, on: :collection
       end
-      resources :posts
+      resources :posts do
+        get :search, on: :collection
+      end
       resources :tags, only: [:index]
       resources :genres, only: [:index]
       resources :comments, only: [:create, :destroy]

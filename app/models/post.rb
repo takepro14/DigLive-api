@@ -44,4 +44,8 @@ class Post < ApplicationRecord
     end
   end
 
+  def self.search(keyword)
+    self.where("content LIKE?", "%#{keyword}%")
+  end
+
 end
