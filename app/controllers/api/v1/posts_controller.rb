@@ -19,8 +19,7 @@ class Api::V1::PostsController < ApplicationController
                                                   :genres
                                                 ]
                                               })
-                                                .map{|f| f.posts}
-
+                                                .map{|f| f.posts}.flatten
       posts = Kaminari.paginate_array(followingPosts).page(params[:page]).per(10)
 
     # ----- /users/id: 投稿タブ -----
