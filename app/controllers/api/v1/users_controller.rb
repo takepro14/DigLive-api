@@ -11,34 +11,53 @@ class Api::V1::UsersController < ApplicationController
     # /home: フォロータブ
     if params[:user_id]
       user = User.find(params[:user_id])
-      followingUsers = user.following.includes(:posts)
+      followingUsers = user.following.includes([
+                                                { posts: [
+                                                  { user: :passive_relationships },
+                                                  { comments: :user },
+                                                  :likes,
+                                                  :tags,
+                                                  :genres
+                                                ]},
+                                                :active_relationships,
+                                                :passive_relationships,
+                                                :genres
+                                              ])
       users = Kaminari.paginate_array(followingUsers).page(params[:page]).per(10)
       pagination = resources_with_pagination(users)
 
     # /home: 最新タブ
     else
-      users_tmp = User.includes(:posts)
+      users_tmp = User.includes([
+                                  { posts: [
+                                    { user: :passive_relationships },
+                                    { comments: :user },
+                                    :likes,
+                                    :tags,
+                                    :genres
+                                  ]},
+                                  :active_relationships,
+                                  :passive_relationships,
+                                  :genres
+                                ])
       # includeで配列になるのでpaginate_arrayを噛ませる
       users =  Kaminari.paginate_array(users_tmp).page(params[:page]).per(10)
       pagination = resources_with_pagination(users)
     end
 
     # ========== 共通処理 ==========
-    @users = users.as_json(include: [{
-                                  posts: {
-                                    include: [
-                                      { user: { include: :passive_relationships } },
-                                      { comments: { include: :user } },
-                                      :likes,
-                                      :tags,
+    @users = users.as_json(include: [
+                                      { posts: { include: [
+                                        { user: { include: :passive_relationships } },
+                                        { comments: { include: :user } },
+                                        :likes,
+                                        :tags,
+                                        :genres
+                                      ]}},
+                                      :active_relationships,
+                                      :passive_relationships,
                                       :genres
-                                    ]
-                                  }
-                                },
-                                  :active_relationships,
-                                  :passive_relationships,
-                                  :genres
-                                ])
+                                    ])
       object = { users: @users, kaminari: pagination }
       render json: object
   end
@@ -47,13 +66,20 @@ class Api::V1::UsersController < ApplicationController
   # ユーザー詳細
   ####################################################################################################
   def show
-    @user = User.find(params[:id])
+    @user = User.includes([
+                            { posts: [:user, :likes] },
+                            :active_relationships,
+                            :passive_relationships,
+                            :genres,
+                            { likes: { post: :user } }
+                          ])
+                          .find(params[:id])
     render json: @user.as_json(include: [
-                                { posts: { include: [:user, :likes] } },
-                                :active_relationships,
-                                :passive_relationships,
-                                :genres,
-                                { likes: { include: { post: { include: :user  } } } }
+                                          { posts: { include: [:user, :likes] } },
+                                          :active_relationships,
+                                          :passive_relationships,
+                                          :genres,
+                                          { likes: { include: { post: { include: :user  } } } }
                               ])
   end
 
@@ -64,9 +90,9 @@ class Api::V1::UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       render json: @user.as_json(include: [
-                                  { posts: { include: :user } },
-                                  :active_relationships,
-                                  :passive_relationships,
+                                            { posts: { include: :user } },
+                                            :active_relationships,
+                                            :passive_relationships
                                 ])
     else
       render @user.errors.full_messages
@@ -108,29 +134,25 @@ class Api::V1::UsersController < ApplicationController
     if params[:user_keyword]
       return if params[:user_keyword] == ''
       users = User.keyword_search_users(params[:user_keyword]).includes([
-                                                                        { posts: [
-                                                                          { user: :passive_relationships },
-                                                                          { comments: :user },
-                                                                          :likes,
-                                                                          :tags,
+                                                                          { posts: [
+                                                                            { user: :passive_relationships },
+                                                                            { comments: :user },
+                                                                            :likes,
+                                                                            :tags,
+                                                                            :genres
+                                                                          ]},
+                                                                          :active_relationships,
+                                                                          :passive_relationships,
                                                                           :genres
-                                                                          ]
-                                                                        },
-                                                                        :active_relationships,
-                                                                        :passive_relationships,
-                                                                        :genres
-                                                                      ])
-      render json: users.as_json(include: [{
-                                            posts: {
-                                              include: [
-                                                { user: { include: :passive_relationships } },
-                                                { comments: { include: :user } },
-                                                :likes,
-                                                :tags,
-                                                :genres
-                                              ]
-                                            }
-                                          },
+                                                                        ])
+      render json: users.as_json(include: [
+                                            { posts: { include: [
+                                              { user: { include: :passive_relationships } },
+                                              { comments: { include: :user } },
+                                              :likes,
+                                              :tags,
+                                              :genres
+                                            ]}},
                                             :active_relationships,
                                             :passive_relationships,
                                             :genres
@@ -139,29 +161,25 @@ class Api::V1::UsersController < ApplicationController
     elsif params[:user_genre]
       return if params[:user_genre] == ''
       users = Genre.genre_search_users(params[:user_genre]).includes([
-                                                                        { posts: [
-                                                                          { user: :passive_relationships },
-                                                                          { comments: :user },
-                                                                          :likes,
-                                                                          :tags,
-                                                                          :genres
-                                                                          ]
-                                                                        },
-                                                                        :active_relationships,
-                                                                        :passive_relationships,
+                                                                      { posts: [
+                                                                        { user: :passive_relationships },
+                                                                        { comments: :user },
+                                                                        :likes,
+                                                                        :tags,
                                                                         :genres
-                                                                      ])
-      render json: users.as_json(include: [{
-                                            posts: {
-                                              include: [
-                                                { user: { include: :passive_relationships } },
-                                                { comments: { include: :user } },
-                                                :likes,
-                                                :tags,
-                                                :genres
-                                              ]
-                                            }
-                                          },
+                                                                      ]},
+                                                                      :active_relationships,
+                                                                      :passive_relationships,
+                                                                      :genres
+                                                                    ])
+      render json: users.as_json(include: [
+                                            { posts: { include: [
+                                              { user: { include: :passive_relationships } },
+                                              { comments: { include: :user } },
+                                              :likes,
+                                              :tags,
+                                              :genres
+                                            ]}},
                                             :active_relationships,
                                             :passive_relationships,
                                             :genres
