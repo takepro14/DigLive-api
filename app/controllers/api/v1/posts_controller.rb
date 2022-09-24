@@ -19,7 +19,8 @@ class Api::V1::PostsController < ApplicationController
                                                   :genres
                                                 ]
                                               })
-                                                .map{|f| f.posts}.flatten
+                                      .map(&:posts).flatten
+                                      .sort{|a,b| b[:created_at] <=> a[:created_at]}
       posts = Kaminari.paginate_array(followingPosts).page(params[:page]).per(10)
 
     # ---------- /users/id/投稿 ----------
@@ -32,18 +33,20 @@ class Api::V1::PostsController < ApplicationController
                                         :likes,
                                         :genres
                                       ])
+                            .sort{|a,b| b[:created_at] <=> a[:created_at]}
       posts = Kaminari.paginate_array(userPosts).page(params[:page]).per(10)
 
     # ---------- /users/id/いいね ----------
     elsif params[:like_user_id]
       user = User.find(params[:like_user_id])
       userLikes = user.likes.map{|like| like.post}.includes([
-                                                              { user: :passive_relationships },
-                                                              :tags,
-                                                              { comments: :user},
-                                                              :likes,
-                                                              :genres
-                                                            ])
+                                                  { user: :passive_relationships },
+                                                  :tags,
+                                                  { comments: :user},
+                                                  :likes,
+                                                  :genres
+                                                ])
+                                          .sort{|a,b| b[:created_at] <=> a[:created_at]}
       posts = Kaminari.paginate_array(userLikes).page(params[:page]).per(10)
 
     # ---------- /home/投稿/最新 ----------
@@ -55,7 +58,8 @@ class Api::V1::PostsController < ApplicationController
                                 :likes,
                                 :genres
                               ])
-      posts = allPosts.page(params[:page]).per(10)
+                      .sort{|a,b| b[:created_at] <=> a[:created_at]}
+      posts = Kaminari.paginate_array(allPosts).page(params[:page]).per(10)
     end
 
     # ========== 共通処理 ==========
