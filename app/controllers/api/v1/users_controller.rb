@@ -7,57 +7,59 @@ class Api::V1::UsersController < ApplicationController
   # ユーザー一覧
   ####################################################################################################
   def index
-    # ========== 個別処理 ==========
-    # /home: フォロータブ
+    # ---------- /home/ユーザ/フォロー ----------
     if params[:user_id]
       user = User.find(params[:user_id])
-      followingUsers = user.following.includes([
-                                                { posts: [
-                                                  { user: :passive_relationships },
-                                                  { comments: :user },
-                                                  :likes,
-                                                  :tags,
-                                                  :genres
-                                                ]},
-                                                :active_relationships,
-                                                :passive_relationships,
-                                                :genres
-                                              ])
+      followingUsers = user.following
+                            .order(created_at: "DESC")
+                            .includes([
+                              { posts: [
+                                { user: :passive_relationships },
+                                { comments: :user },
+                                :likes,
+                                :tags,
+                                :genres
+                              ]},
+                              :active_relationships,
+                              :passive_relationships,
+                              :genres
+                            ])
       users = Kaminari.paginate_array(followingUsers).page(params[:page]).per(10)
       pagination = resources_with_pagination(users)
 
-    # /home: 最新タブ
+    # ---------- /home/ユーザ/最新 ----------
     else
-      users_tmp = User.includes([
-                                  { posts: [
-                                    { user: :passive_relationships },
-                                    { comments: :user },
-                                    :likes,
-                                    :tags,
-                                    :genres
-                                  ]},
-                                  :active_relationships,
-                                  :passive_relationships,
-                                  :genres
-                                ])
+      users_tmp = User.order(created_at: "DESC")
+                        .includes([
+                          { posts: [
+                            { user: :passive_relationships },
+                            { comments: :user },
+                            :likes,
+                            :tags,
+                            :genres
+                          ]},
+                          :active_relationships,
+                          :passive_relationships,
+                          :genres
+                        ])
       # includeで配列になるのでpaginate_arrayを噛ませる
       users =  Kaminari.paginate_array(users_tmp).page(params[:page]).per(10)
       pagination = resources_with_pagination(users)
     end
 
-    # ========== 共通処理 ==========
+    # ---------- 共通 ----------
     @users = users.as_json(include: [
-                                      { posts: { include: [
-                                        { user: { include: :passive_relationships } },
-                                        { comments: { include: :user } },
-                                        :likes,
-                                        :tags,
-                                        :genres
-                                      ]}},
-                                      :active_relationships,
-                                      :passive_relationships,
-                                      :genres
-                                    ])
+                            { posts: { include: [
+                              { user: { include: :passive_relationships } },
+                              { comments: { include: :user } },
+                              :likes,
+                              :tags,
+                              :genres
+                            ]}},
+                            :active_relationships,
+                            :passive_relationships,
+                            :genres
+                          ])
       object = { users: @users, kaminari: pagination }
       render json: object
   end
@@ -66,20 +68,22 @@ class Api::V1::UsersController < ApplicationController
   # ユーザー詳細
   ####################################################################################################
   def show
+    # TODO: postsのソート順どうなる？
     @user = User.includes([
-                            { posts: [:user, :likes] },
-                            :active_relationships,
-                            :passive_relationships,
-                            :genres,
-                            { likes: { post: :user } }
-                          ])
-                          .find(params[:id])
+                  { posts: [:user, :likes] },
+                  :active_relationships,
+                  :passive_relationships,
+                  :genres,
+                  { likes: { post: :user } }
+                ])
+                .find(params[:id])
+
     render json: @user.as_json(include: [
-                                          { posts: { include: [:user, :likes] } },
-                                          :active_relationships,
-                                          :passive_relationships,
-                                          :genres,
-                                          { likes: { include: { post: { include: :user  } } } }
+                                { posts: { include: [:user, :likes] } },
+                                :active_relationships,
+                                :passive_relationships,
+                                :genres,
+                                { likes: { include: { post: { include: :user  } } } }
                               ])
   end
 
@@ -90,9 +94,9 @@ class Api::V1::UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       render json: @user.as_json(include: [
-                                            { posts: { include: :user } },
-                                            :active_relationships,
-                                            :passive_relationships
+                                  { posts: { include: :user } },
+                                  :active_relationships,
+                                  :passive_relationships
                                 ])
     else
       render @user.errors.full_messages
@@ -130,60 +134,68 @@ class Api::V1::UsersController < ApplicationController
   # ユーザー検索
   ####################################################################################################
   def search
-    # ========== キーワード検索 ==========
+    # ==================================================
+    # キーワード検索
+    # ==================================================
     if params[:user_keyword]
       return if params[:user_keyword] == ''
-      users = User.keyword_search_users(params[:user_keyword]).includes([
-                                                                          { posts: [
-                                                                            { user: :passive_relationships },
-                                                                            { comments: :user },
-                                                                            :likes,
-                                                                            :tags,
-                                                                            :genres
-                                                                          ]},
-                                                                          :active_relationships,
-                                                                          :passive_relationships,
-                                                                          :genres
-                                                                        ])
+      users = User.keyword_search_users(params[:user_keyword])
+                  .order(created_at: "DESC")
+                  .includes([
+                    { posts: [
+                      { user: :passive_relationships },
+                      { comments: :user },
+                      :likes,
+                      :tags,
+                      :genres
+                    ]},
+                    :active_relationships,
+                    :passive_relationships,
+                    :genres
+                  ])
       render json: users.as_json(include: [
-                                            { posts: { include: [
-                                              { user: { include: :passive_relationships } },
-                                              { comments: { include: :user } },
-                                              :likes,
-                                              :tags,
-                                              :genres
-                                            ]}},
-                                            :active_relationships,
-                                            :passive_relationships,
-                                            :genres
-                                          ])
-    # ========== ジャンル検索 ==========
+                                  { posts: { include: [
+                                    { user: { include: :passive_relationships } },
+                                    { comments: { include: :user } },
+                                    :likes,
+                                    :tags,
+                                    :genres
+                                  ]}},
+                                  :active_relationships,
+                                  :passive_relationships,
+                                  :genres
+                                ])
+    # ==================================================
+    # ジャンル検索
+    # ==================================================
     elsif params[:user_genre]
       return if params[:user_genre] == ''
-      users = Genre.genre_search_users(params[:user_genre]).includes([
-                                                                      { posts: [
-                                                                        { user: :passive_relationships },
-                                                                        { comments: :user },
-                                                                        :likes,
-                                                                        :tags,
-                                                                        :genres
-                                                                      ]},
-                                                                      :active_relationships,
-                                                                      :passive_relationships,
-                                                                      :genres
-                                                                    ])
+      users = Genre.genre_search_users(params[:user_genre])
+                    .order(created_at: "DESC")
+                    .includes([
+                      { posts: [
+                        { user: :passive_relationships },
+                        { comments: :user },
+                        :likes,
+                        :tags,
+                        :genres
+                      ]},
+                      :active_relationships,
+                      :passive_relationships,
+                      :genres
+                    ])
       render json: users.as_json(include: [
-                                            { posts: { include: [
-                                              { user: { include: :passive_relationships } },
-                                              { comments: { include: :user } },
-                                              :likes,
-                                              :tags,
-                                              :genres
-                                            ]}},
-                                            :active_relationships,
-                                            :passive_relationships,
-                                            :genres
-                                          ])
+                                  { posts: { include: [
+                                    { user: { include: :passive_relationships } },
+                                    { comments: { include: :user } },
+                                    :likes,
+                                    :tags,
+                                    :genres
+                                  ]}},
+                                  :active_relationships,
+                                  :passive_relationships,
+                                  :genres
+                                ])
     end
   end
 

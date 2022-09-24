@@ -9,12 +9,15 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship", foreign_key: "follower_id", dependent:   :destroy
   has_many :passive_relationships, class_name:  "Relationship", foreign_key: "followed_id", dependent:   :destroy
-  has_many :following, through: :active_relationships, source: :followed
-  has_many :followers, through: :passive_relationships, source: :follower
   has_many :user_genre_maps, dependent: :destroy
-  has_many :genres, through: :user_genre_maps
   has_many :active_notifications, class_name: 'Notification', foreign_key: 'visitor_id', dependent: :destroy
   has_many :passive_notifications, class_name: 'Notification', foreign_key: 'visited_id', dependent: :destroy
+
+  # 間接
+  has_many :genres, through: :user_genre_maps
+  has_many :liked_posts, through: :likes, source: :post
+  has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
 
   ####################################################################################################
   # バリデーション

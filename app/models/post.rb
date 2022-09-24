@@ -5,12 +5,15 @@ class Post < ApplicationRecord
   ####################################################################################################
   belongs_to :user
   has_many :post_tag_maps, dependent: :destroy
-  has_many :tags, through: :post_tag_maps
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :post_genre_maps, dependent: :destroy
-  has_many :genres, through: :post_genre_maps
   has_many :notifications, dependent: :destroy
+
+  # 間接
+  has_many :tags, through: :post_tag_maps
+  has_many :genres, through: :post_genre_maps
+  has_many :liked_users, through: :likes, source: :user
 
   ####################################################################################################
   # バリデーション
