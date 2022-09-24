@@ -20,7 +20,7 @@ class Api::V1::PostsController < ApplicationController
                                                 ]
                                               })
                                                 .map{|f| f.posts}.flatten
-      posts = Kaminari.paginate_array(followingPosts).order(created_at: "DESC").page(params[:page]).per(10)
+      posts = Kaminari.paginate_array(followingPosts).page(params[:page]).per(10)
 
     # ---------- /users/id/投稿 ----------
     elsif params[:post_user_id]
@@ -32,7 +32,7 @@ class Api::V1::PostsController < ApplicationController
                                         :likes,
                                         :genres
                                       ])
-      posts = Kaminari.paginate_array(userPosts).order(created_at: "DESC").page(params[:page]).per(10)
+      posts = Kaminari.paginate_array(userPosts).page(params[:page]).per(10)
 
     # ---------- /users/id/いいね ----------
     elsif params[:like_user_id]
@@ -44,7 +44,7 @@ class Api::V1::PostsController < ApplicationController
                                                               :likes,
                                                               :genres
                                                             ])
-      posts = Kaminari.paginate_array(userLikes).order(created_at: "DESC").page(params[:page]).per(10)
+      posts = Kaminari.paginate_array(userLikes).page(params[:page]).per(10)
 
     # ---------- /home/投稿/最新 ----------
     else
@@ -55,7 +55,7 @@ class Api::V1::PostsController < ApplicationController
                                 :likes,
                                 :genres
                               ])
-      posts = allPosts.order(created_at: "DESC").page(params[:page]).per(10)
+      posts = allPosts.page(params[:page]).per(10)
     end
 
     # ========== 共通処理 ==========

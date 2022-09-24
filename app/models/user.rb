@@ -1,5 +1,9 @@
 require "validator/email_validator"
 class User < ApplicationRecord
+
+  ####################################################################################################
+  # アソシエーション
+  ####################################################################################################
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
@@ -12,6 +16,10 @@ class User < ApplicationRecord
   has_many :active_notifications, class_name: 'Notification', foreign_key: 'visitor_id', dependent: :destroy
   has_many :passive_notifications, class_name: 'Notification', foreign_key: 'visited_id', dependent: :destroy
 
+  ####################################################################################################
+  # バリデーション
+  ####################################################################################################
+  before_validation :downcase_email
   validates :name, presence: true,
         length: {
           maximum: 30,
@@ -35,18 +43,30 @@ class User < ApplicationRecord
               },
               allow_nil: true
 
+  ####################################################################################################
+  # モジュール等
+  ####################################################################################################
   include TokenGenerateService
   mount_uploader :avatar, AvatarUploader
-  before_validation :downcase_email
   has_secure_password
 
-
+  ####################################################################################################
+  # クラスメソッド
+  ####################################################################################################
   class << self
     def find_by_activated(email)
       find_by(email: email, activated: true)
     end
+
+    # キーワードでユーザーを検索
+    def keyword_search_users(keyword)
+      where("name LIKE?", "%#{keyword}%").or(self.where("profile LIKE?", "%#{keyword}%"))
+    end
   end
 
+  ####################################################################################################
+  # インスタンスメソッド
+  ####################################################################################################
   def save_genres(sent_genres)
     current_genres = self.genres.pluck(:genre_name) unless self.genres.nil?
     old_genres = current_genres - sent_genres
@@ -96,11 +116,9 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
-  # キーワードでユーザーを検索
-  def self.keyword_search_users(keyword)
-    self.where("name LIKE?", "%#{keyword}%").or(self.where("profile LIKE?", "%#{keyword}%"))
-  end
-
+  ####################################################################################################
+  # プライベートメソッド
+  ####################################################################################################
   private
 
     def downcase_email
