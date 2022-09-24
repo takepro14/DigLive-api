@@ -58,10 +58,11 @@ class User < ApplicationRecord
       find_by(email: email, activated: true)
     end
 
-    # キーワードでユーザーを検索
     def keyword_search_users(keyword)
-      where("name LIKE?", "%#{keyword}%").or(self.where("profile LIKE?", "%#{keyword}%"))
+      where("name LIKE?", "%#{keyword}%").or(where("profile LIKE?", "%#{keyword}%"))
     end
+
+    # キーワードでユーザーを検索
   end
 
   ####################################################################################################
