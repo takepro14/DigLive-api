@@ -1,6 +1,9 @@
 class Post < ApplicationRecord
-  default_scope -> { order(created_at: :desc) }
+  # default_scope -> { order(created_at: :desc) }
 
+  ####################################################################################################
+  # アソシエーション
+  ####################################################################################################
   belongs_to :user
   has_many :post_tag_maps, dependent: :destroy
   has_many :tags, through: :post_tag_maps
@@ -10,8 +13,14 @@ class Post < ApplicationRecord
   has_many :genres, through: :post_genre_maps
   has_many :notifications, dependent: :destroy
 
+  ####################################################################################################
+  # バリデーション
+  ####################################################################################################
   validates :content, presence: true, length: { maximum: 300 }
 
+  ####################################################################################################
+  # インスタンスメソッド
+  ####################################################################################################
   def save_tag(sent_tags)
     current_tags = self.tags.pluck(:tag_name) unless self.tags.nil?
     old_tags = current_tags - sent_tags
@@ -44,6 +53,9 @@ class Post < ApplicationRecord
     end
   end
 
+  ####################################################################################################
+  # クラスメソッド
+  ####################################################################################################
   # キーワードで投稿を検索
   def self.keyword_search_posts(keyword)
     self.where("content LIKE?", "%#{keyword}%")
