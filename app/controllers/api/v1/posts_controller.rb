@@ -91,6 +91,8 @@ class Api::V1::PostsController < ApplicationController
       render json: @post.as_json(include: [
                                   { user: { include: { passive_relationships: { only: :follower_id } } } },
                                   :tags,
+                                  { comments: { include: :user } },
+                                  :likes,
                                   :genres
                                 ])
     else

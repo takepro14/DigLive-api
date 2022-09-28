@@ -96,7 +96,9 @@ class Api::V1::UsersController < ApplicationController
       render json: @user.as_json(include: [
                                   { posts: { include: :user } },
                                   :active_relationships,
-                                  :passive_relationships
+                                  :passive_relationships,
+                                  :genres,
+                                  { likes: { include: :post } }
                                 ])
     else
       render @user.errors.full_messages
