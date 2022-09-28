@@ -16,7 +16,9 @@ Rails.application.routes.draw do
       resources :comments, only: [:create, :destroy]
       resources :likes, only: [:create, :destroy]
       resources :relationships, only: [:create, :destroy]
-      resources :notifications, only: [:index]
+      resources :notifications, only: :index do
+        put :update_all, on: :collection
+      end
     end
   end
 end
