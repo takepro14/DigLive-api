@@ -39,8 +39,10 @@ class Api::V1::NotificationsController < ApplicationController
   ####################################################################################################
   def update_all
     @user = User.find(current_user.id)
-    @user.passive_notifications.update_all checked: true
-    @user.save
+    if @user.passive_notifications
+      @user.passive_notifications.update_all checked: true
+      @user.save
+    end
   end
 
 end
