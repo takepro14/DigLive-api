@@ -31,7 +31,7 @@ class Api::V1::NotificationsController < ApplicationController
   ####################################################################################################
   def count_all
     @user = User.find(current_user.id)
-    @user.passive_notifications.where(checked: false).length
+    render :json => @user.passive_notifications.where(checked: false).length
   end
 
   ####################################################################################################
