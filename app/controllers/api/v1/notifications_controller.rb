@@ -1,19 +1,37 @@
 class Api::V1::NotificationsController < ApplicationController
+  include Pagination
 
   ####################################################################################################
   # 通知一覧
   ####################################################################################################
   def index
+    # binding.pry
     @user = User.find(current_user.id)
-    @notifications = @user.passive_notifications.includes(:visitor, :visited, :post, :comment)
-    # @notifications.where(checked: false).each{|notification| notification.update_attributes(checked: true)}
-
-    render json: @notifications.as_json(include:[
+    notifications = @user.passive_notifications
+                          .order(created_at: :desc)
+                          .includes([
+                            :visitor,
+                            :visited,
+                            :post,
+                            :comment
+                          ])
+    notifications = Kaminari.paginate_array(notifications).page(params[:page]).per(10)
+    pagination = resources_with_pagination(notifications)
+    @notifications = notifications.as_json(include:[
                                             :visitor,
                                             :visited,
                                             { post: { include: :comments } }
-                                          ]
-                                        )
+                                          ])
+    object = { notifications: @notifications, kaminari: pagination }
+    render json: object
+  end
+
+  ####################################################################################################
+  # 通知未読数取得
+  ####################################################################################################
+  def count_all
+    @user = User.find(current_user.id)
+    @user.passive_notifications.where(checked: false).length
   end
 
   ####################################################################################################

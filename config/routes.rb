@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :relationships, only: [:create, :destroy]
       resources :notifications, only: :index do
         put :update_all, on: :collection
+        get :count_all, on: :collection
       end
     end
   end

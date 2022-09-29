@@ -8,7 +8,8 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :post_genre_maps, dependent: :destroy
-  has_many :notifications, dependent: :destroy
+  has_many :active_notifications, class_name: 'Notification', dependent: :destroy
+  has_many :passive_notifications, class_name: 'Notification', dependent: :destroy
 
   # 間接
   has_many :tags, through: :post_tag_maps
