@@ -19,7 +19,7 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module App
+module DigLive
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     # 6.0 => Zeitwerk(オートロードシステム)を有効にする
