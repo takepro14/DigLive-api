@@ -14,6 +14,7 @@ WORKDIR ${HOME}
 
 COPY Gemfile* ./
 
+
 RUN apk update && \
     apk upgrade && \
 	# --no-cache: イメージ軽量化
