@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         put :update_all, on: :collection
         get :count_all, on: :collection
       end
+      resources :tasks, only: :index
     end
   end
 end
