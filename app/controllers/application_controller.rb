@@ -4,8 +4,8 @@ class ApplicationController < ActionController::API
   # 認可を行う
   include UserAuthenticateService
 
-  # CSRF対策
-  before_action :xhr_request?
+  # CSRF対策(ヘルスチェックではスキップ)
+  before_action :xhr_request?, if: :check_xhr_request?
 
 
   private
@@ -19,6 +19,10 @@ class ApplicationController < ActionController::API
     # Internal Server Error
     def response_500(msg = "Internal Server Error")
       render status: 500, json: { status: 500, error: msg }
+    end
+
+    def check_xhr_request?
+      true
     end
 
 end
