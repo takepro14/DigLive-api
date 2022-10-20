@@ -16,11 +16,11 @@ module UserAuth
 
   # JWTの発行者を識別する文字列(認可サーバーURL)
   mattr_accessor :token_issuer
-  self.token_issuer = ENV["BASE_URL"]
+  self.token_issuer = ENV["API_URL"]
 
   # JWTの受信者を識別する文字列(保護リソースURL)
   mattr_accessor :token_audience
-  self.token_audience = ENV["BASE_URL"]
+  self.token_audience = ENV["API_URL"]
 
   # JWTの署名アルゴリズム
   mattr_accessor :token_signature_algorithm

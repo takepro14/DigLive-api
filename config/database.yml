@@ -4,9 +4,6 @@
 default: &default
   adapter:  postgresql
   encoding: unicode
-  host:     db
-  username: postgres
-  password: <%= ENV["DB_PASSWORD"] %>
   pool:     <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 ##################################################
@@ -14,7 +11,10 @@ default: &default
 ##################################################
 development:
   <<: *default
-  database: dig_live_development
+  database: <%= ENV['DB_NAME'] %>
+  host:     <%= ENV['DB_HOSTNAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV["DB_PASSWORD"] %>
 
 ##################################################
 # テスト環境
@@ -29,6 +29,6 @@ test:
 production:
   <<: *default
   database: <%= ENV['DB_NAME'] %>
-  host:     <%= ENV['DB_HOSTNAME'] %>  # RDSエンドポイント
+  host:     <%= ENV['DB_HOSTNAME'] %>
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
