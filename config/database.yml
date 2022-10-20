@@ -28,7 +28,7 @@ test:
 ##################################################
 production:
   <<: *default
-  database: dig_live_production
-  host:     <%= ENV['DB_HOST'] %>  # RDSエンドポイント
+  database: <%= ENV['DB_NAME'] %>
+  host:     <%= ENV['DB_HOSTNAME'] %>  # RDSエンドポイント
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
