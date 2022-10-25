@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Tags", type: :request do
+RSpec.describe "Api::V1::Tags", type: :request do
   describe "GET /index" do
     it "returns http success" do
       get "/tags/index"

@@ -36,13 +36,13 @@ RSpec.describe Post, type: :model do
           expect(post.errors.full_messages).to eq content_maxlength_msg
         end
       end
-      context '最新1件を取得する場合' do
-        it '作成日が最新の1件を取得できること' do
-          post1 = create(:post)
-          post2 = create(:post)  # 作成日が最新
-          expect(post2).to eq Post.first
-        end
-      end
+      # context '最新1件を取得する場合' do
+      #   it '作成日が最新の1件を取得できること' do
+      #     post1 = create(:post)
+      #     post2 = create(:post)  # 作成日が最新
+      #     expect(post2).to eq Post.first
+      #   end
+      # end
     end
   end
 end

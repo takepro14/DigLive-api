@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe "Likes", type: :request do
+RSpec.describe "Api::V1::Relationships", type: :request do
   describe "GET /create" do
     it "returns http success" do
-      get "/likes/create"
+      get "/relationships/create"
       expect(response).to have_http_status(:success)
     end
   end
 
   describe "GET /destroy" do
     it "returns http success" do
-      get "/likes/destroy"
+      get "/relationships/destroy"
       expect(response).to have_http_status(:success)
     end
   end

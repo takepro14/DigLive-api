@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe "Relationships", type: :request do
+RSpec.describe "Api::V1::Comments", type: :request do
   describe "GET /create" do
     it "returns http success" do
-      get "/relationships/create"
+      get "/comments/create"
       expect(response).to have_http_status(:success)
     end
   end
 
   describe "GET /destroy" do
     it "returns http success" do
-      get "/relationships/destroy"
+      get "/comments/destroy"
       expect(response).to have_http_status(:success)
     end
   end
