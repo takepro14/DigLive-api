@@ -1,5 +1,5 @@
 ##################################################
-# デフォルト
+# 共通設定値
 ##################################################
 default: &default
   adapter:  postgresql
@@ -21,7 +21,10 @@ development:
 ##################################################
 test:
   <<: *default
-  database: dig_live_test
+  database: <%= ENV['DB_NAME'] %>
+  host:     <%= ENV['DB_HOSTNAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV["DB_PASSWORD"] %>
 
 ##################################################
 # 本番環境
