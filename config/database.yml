@@ -14,7 +14,7 @@ development:
   database: <%= ENV['DB_NAME'] %>
   host:     <%= ENV['DB_HOSTNAME'] %>
   username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV["DB_PASSWORD"] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
 ##################################################
 # テスト環境
@@ -24,7 +24,7 @@ test:
   database: <%= ENV['DB_NAME'] %>
   host:     <%= ENV['DB_HOSTNAME'] %>
   username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV["DB_PASSWORD"] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
 ##################################################
 # 本番環境
