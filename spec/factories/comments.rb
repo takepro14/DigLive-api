@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :comment do
-    user { nil }
-    post { nil }
-    comment { "MyText" }
+    sequence(:comment) { |n| "テストコメント#{n}です。" }
+    association :user, :post
   end
 end
