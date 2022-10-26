@@ -1,15 +1,61 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  ####################################################################################################
+  # アソシエーション
+  ####################################################################################################
+  describe 'アソシエーションテスト' do
+    context 'ユーザ削除時' do
+      it '投稿も同時に削除されること' do
+        user = create(:user)
+        post = create(:post, user_id: user.id)
+        expect { user.destroy }.to change { Post.count }.by(-1)
+      end
+      it 'いいねも同時に削除されること' do
+        user = create(:user)
+        post = create(:post, user_id: user.id)
+        like = create(:like, user_id: user.id, post_id: post.id)
+        expect { user.destroy }.to change { Like.count }.by(-1)
+      end
+      it 'フォロー関係も同時に削除されること' do
+        following = create(:user)
+        follower = create(:user)
+        relationship = create(:relationship, followed_id: following.id, follower_id: follower.id)
+        expect { following.destroy }.to change { Relationship.count }.by(-1)
+      end
+      it 'フォロワー関係も同時に削除されること' do
+        following = create(:user)
+        follower = create(:user)
+        relationship = create(:relationship, followed_id: following.id, follower_id: follower.id)
+        expect { follower.destroy }.to change { Relationship.count }.by(-1)
+      end
+      it '選択したジャンルも同時に削除されること' do
+        user = create(:user)
+        genre = create(:genre)
+        user_genre_map = create(:user_genre_map, user: user, genre: genre)
+        expect { user.destroy }.to change { UserGenreMap.count }.by(-1)
+      end
+      it '通知も同時に削除されること' do
+        visitor = create(:user)
+        visited = create(:user)
+        notification = create(:notification, visitor_id: visitor.id, visited_id: visited.id)
+        expect { visitor.destroy }.to change { Notification.count }.by(-1)
+      end
+      it '被通知も同時に削除されること' do
+        visitor = create(:user)
+        visited = create(:user)
+        notification = create(:notification, visitor_id: visitor.id, visited_id: visited.id)
+        expect { visited.destroy }.to change { Notification.count }.by(-1)
+      end
+    end
+  end
 
+  ####################################################################################################
+  # バリデーション
+  ####################################################################################################
   describe 'バリデーションテスト' do
-
-    ####################################################################################################
-    # 名前
-    ####################################################################################################
     context 'name' do
       # let(:user) { User.new(name: name, email: "test@example.com", password: "password") }
-
       context '空の場合' do
         it 'エラー「名前を入力してください」が出力されること' do
           user = build(:user, name: "")
@@ -18,7 +64,6 @@ RSpec.describe User, type: :model do
           expect(user.errors.full_messages).to eq name_required_msg
         end
       end
-
       context '30文字超の場合' do
         it 'エラー「名前は30文字以内で入力してください」が出力されること' do
           user = build(:user, name: "a" * 31)
@@ -27,7 +72,6 @@ RSpec.describe User, type: :model do
           expect(user.errors.full_messages).to eq name_maxlength_msg
         end
       end
-
       context '30文字の場合' do
         it 'ユーザが保存でき、1人増えること' do
           user = build(:user, name: "a" * 30)
@@ -35,12 +79,7 @@ RSpec.describe User, type: :model do
         end
       end
     end
-
-    ####################################################################################################
-    # メールアドレス
-    ####################################################################################################
     context 'email' do
-
       context '空の場合' do
         it 'エラー「メールアドレスを入力してください」が出力されること' do
           user = build(:user, email: "")
@@ -49,7 +88,6 @@ RSpec.describe User, type: :model do
           expect(user.errors.full_messages).to eq email_required_msg
         end
       end
-
       context '255文字超の場合' do
         max = 255
         domain = "@example.com"
@@ -60,7 +98,6 @@ RSpec.describe User, type: :model do
           expect(user.errors.full_messages).to eq email_maxlength_msg
         end
       end
-
       context '正しい書式の場合' do
         context 'ユーザが保存でき、1人増えること' do
           ok_emails = %w(
@@ -80,7 +117,6 @@ RSpec.describe User, type: :model do
           end
         end
       end
-
       context '誤った書式の場合' do
         context 'ユーザは保存されず、エラー「メールアドレスは不正な値です」が出力されること' do
           ng_emails = %w(
@@ -108,7 +144,6 @@ RSpec.describe User, type: :model do
           end
         end
       end
-
       context '大文字の場合' do
         it '小文字に変換され、保存されること' do
           user = build(:user, email: "USER@EXAMPLE.COM")
@@ -117,7 +152,6 @@ RSpec.describe User, type: :model do
           expect(user.email).to eq email.downcase
         end
       end
-
       context '同じemailをもつユーザが有効化されていない場合' do
         count = 3
         (1..count).each do |c|
@@ -129,17 +163,6 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
-  describe '各アクションのテスト' do
-    context 'ユーザを削除した場合' do
-      it '投稿も同時に削除されること' do
-        user = create(:user)
-        post = create(:post, user_id: user.id)
-        expect { user.destroy }.to change { Post.count }.by(-1)
-      end
-    end
-  end
-
 end
 
 
