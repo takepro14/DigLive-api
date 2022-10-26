@@ -10,6 +10,8 @@ ja:
       post:
         user: ユーザID
         content: 本文
+      comment:
+        comment: コメント
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
