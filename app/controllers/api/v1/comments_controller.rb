@@ -18,6 +18,9 @@ class Api::V1::CommentsController < ApplicationController
   ####################################################################################################
   def destroy
     comment = Comment.find(params[:id])
+    render json: comment.as_json(include: [
+                                  :user
+                                ])
     comment.destroy
   end
 
