@@ -18,12 +18,12 @@ class Comment < ApplicationRecord
   # インスタンスメソッド
   ####################################################################################################
   def create_notification_comment(visitor_id, post_id, comment_id)
+
     visitor = User.find(visitor_id)
     post = Post.find(post_id)
-    visited_id = post.user.id
     notification = visitor.active_notifications.new(
       visitor_id: visitor_id,
-      visited_id: visited_id,
+      visited_id: post.user.id,
       post_id: post_id,
       comment_id: comment_id,
       action: 'comment'
