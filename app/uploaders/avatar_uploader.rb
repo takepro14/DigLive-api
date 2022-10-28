@@ -1,21 +1,21 @@
 class AvatarUploader < CarrierWave::Uploader::Base
 
-  if Rails.env.development?
-    storage :file  # ローカルにアップロード
-  elsif Rails.env.test?
-    storage :file
+  if Rails.env.production?
+    storage :fog
   else
-    storage :fog  # S3にアップロード
+    storage :file
   end
 
-  # 画像保存先パス
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  # デフォルト画像
   def default_url(*args)
-    "/uploads/#{model.class.to_s.underscore}/#{mounted_as}/default.png"
+    "#{ENV['IMAGE_URL']}/uploads/#{model.class.to_s.underscore}/#{mounted_as}/default.png"
+  end
+
+  def extension_allowlist
+    %w(jpg jpeg gif png)
   end
 
 end
