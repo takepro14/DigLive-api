@@ -30,18 +30,19 @@ class Api::V1::UsersController < ApplicationController
     # ---------- /home/ユーザ/最新 ----------
     else
       users_tmp = User.order(created_at: "DESC")
-                        .includes([
-                          { posts: [
-                            { user: :passive_relationships },
-                            { comments: :user },
-                            :likes,
-                            :tags,
-                            :genres
-                          ]},
-                          :active_relationships,
-                          :passive_relationships,
+                      .where(["name != ? ", 'ゲストユーザー'])
+                      .includes([
+                        { posts: [
+                          { user: :passive_relationships },
+                          { comments: :user },
+                          :likes,
+                          :tags,
                           :genres
-                        ])
+                        ]},
+                        :active_relationships,
+                        :passive_relationships,
+                        :genres
+                      ])
       # includeで配列になるのでpaginate_arrayを噛ませる
       users =  Kaminari.paginate_array(users_tmp).page(params[:page]).per(10)
       pagination = resources_with_pagination(users)
