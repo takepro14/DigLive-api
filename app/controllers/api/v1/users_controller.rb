@@ -112,7 +112,7 @@ class Api::V1::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user.update(user_params)
-    sent_genres = user_genre_params[:genres] === nil ? [] : user_genre_params[:genres]
+    sent_genres = user_genre_params[:genres]
 
     if @user.save
       @user.save_genres(sent_genres)
